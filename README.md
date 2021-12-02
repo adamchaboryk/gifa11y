@@ -11,7 +11,7 @@ Easily add pause buttons to your GIFs. This script is intended for shorter GIFs 
   - Respects `prefers-reduced-motion` media query
 - Vanilla JavaScript, no dependencies
   
-▶️ [View Gifa11y demo](https://adamchaboryk.github.io/gifa11y/)
+▶️ [View Gifa11y demo](https://adamchaboryk.github.io/gifa11y/)... or [view demo on CodePen](https://codepen.io/adamchaboryk/pen/WNZbqNz) to see HTML before Gifa11y does its magic.
 ## Example installation
 Refer to **Props** to easily customize.
   
