@@ -11,7 +11,10 @@ Easily add pause buttons to your GIFs. This script is intended for shorter GIFs 
   - Respects `prefers-reduced-motion` media query
 - Vanilla JavaScript, no dependencies
   
-▶️ [View Gifa11y demo](https://adamchaboryk.github.io/gifa11y/)
+▶️ [View Gifa11y demo](https://adamchaboryk.github.io/gifa11y/) 
+
+Alternatively check out [Gifa11y demo on CodePen](https://codepen.io/adamchaboryk/pen/WNZbqNz) to view HTML before Gifa11y does its magic. Experiment with different props and settings. 
+
 ## Example installation
 Refer to **Props** to easily customize.
   
@@ -76,7 +79,7 @@ For those who prefer reduced motion via system prefs, GIFs will automatically be
 A button to toggle *all* GIFs. Add ````<button id="gifa11y-all">Pause all animations</button>```` within your HTML.
 
 #### Please note:
-- This button has no CSS styling. BYO-CSS (Bring your own CSS). 
+- The "toggle all animations" button has no CSS styling. BYO-CSS (Bring your own CSS). 
 - Button becomes clickable only after GIFs have fully loaded. Uses `disabled` attribute while page is loading. 
 
 ## Colophon
