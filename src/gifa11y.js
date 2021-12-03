@@ -12,6 +12,12 @@ class Gifa11y {
 			buttonBackgroundHover: 'rebeccapurple',
 			buttonIconColor: 'white',
 			buttonFocusColor: '#00e7ffad',
+			buttonIconSize: '1.5rem',
+			buttonIconFontSize: '1rem',
+			buttonPlayIconID: '',
+			buttonPauseIconID: '',
+			buttonPlayIconHTML: '',
+			buttonPauseIconHTML: '',
 			container: 'body',
 			exclusions: '',
 			gifa11yOff: '',
@@ -230,19 +236,46 @@ class Gifa11y {
 					}
 				}
 
-				//SVG icons: https://icons.getbootstrap.com/
-				const svg = `
-				<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-					<path class="gifa11y-pause-icon" style="display: ${pauseDisplay}" d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/>
-					<path class="gifa11y-play-icon" style="display: ${playDisplay}" d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
-				</svg>`;
+				//Create button
+				const pauseButton = document.createElement('button'),
+					defaultPlayIcon = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>`,
+					defaultPauseIcon = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/></svg>`;
 
-				const pauseButton = document.createElement('button');
 				pauseButton.classList.add('gifa11y-btn');
 				pauseButton.setAttribute('aria-label', initialState + ' ' + alt);
 				pauseButton.setAttribute('data-gifa11y-state', currentState);
 				pauseButton.setAttribute('data-gifa11y-alt', alt);
-				pauseButton.innerHTML = svg;
+				pauseButton.innerHTML = `<div class="gifa11y-pause-icon" aria-hidden="true" style="display: ${pauseDisplay}"></div><div class="gifa11y-play-icon" aria-hidden="true" style="display: ${playDisplay}"></div>`;
+				const pauseIcon = pauseButton.querySelector('.gifa11y-pause-icon'),
+					playIcon = pauseButton.querySelector('.gifa11y-play-icon');
+
+				//Pause icon.
+				if (options.buttonPauseIconID.length > 1) {
+					//If icon is supplied via ID on page.
+					const customPauseIcon = document.getElementById(
+						options.buttonPauseIconID
+					).innerHTML;
+					pauseIcon.innerHTML = customPauseIcon;
+				} else if (options.buttonPauseIconHTML.length > 1) {
+					//If icon is supplied via icon font or HTML.
+					pauseIcon.innerHTML = options.buttonPauseIconHTML;
+				} else {
+					pauseIcon.innerHTML = defaultPauseIcon;
+				}
+
+				//Play icon.
+				if (options.buttonPlayIconID.length > 1) {
+					//If icon is supplied via ID on page.
+					const customPlayIcon = document.getElementById(
+						options.buttonPlayIconID
+					).innerHTML;
+					playIcon.innerHTML = customPlayIcon;
+				} else if (options.buttonPlayIconHTML.length > 1) {
+					//If icon is supplied via icon font or HTML.
+					playIcon.innerHTML = options.buttonPlayIconHTML;
+				} else {
+					playIcon.innerHTML = defaultPlayIcon;
+				}
 
 				//If gif is within a hyperlink, insert button before it.
 				if ($el.closest('a[href]')) {
@@ -379,7 +412,8 @@ class Gifa11y {
 		this.generateCSS = () => {
 			const stylesheet = document.createElement('style');
 			stylesheet.innerHTML = `
-				button.gifa11y-btn, span.gifa11y-warning {
+				button.gifa11y-btn, 
+				span.gifa11y-warning {
 					all: unset;
 					box-sizing: border-box !important;
 				}
@@ -391,15 +425,12 @@ class Gifa11y {
 					border: 2px solid white !important;
 					cursor: pointer !important;
 					display: block !important;
-					float:right !important;
-					font-size: 0 !important;
-					height: 36px !important;
-					width: 36px !important;
 					line-height: normal !important;
+					min-height: 36px !important;
+					min-width: 36px !important;
 					text-align: center !important;
 					margin: 12px !important;
-					min-width: 0 !important;
-					padding: 0 !important;
+					padding: 4px !important;
 					position: absolute !important;
 					transition: all .2s ease-in-out !important;
 					z-index: 500 !important;
@@ -411,28 +442,36 @@ class Gifa11y {
 					box-shadow: 0 0 0 5px ${options.buttonFocusColor} !important;
 					outline: 3px solid transparent;
 				}
-				button.gifa11y-btn > svg {
+				div.gifa11y-play-icon i,
+				div.gifa11y-pause-icon > i {
+					font-size: ${options.buttonIconFontSize} !important;
+					padding: 4px !important;
+					min-width: calc(${options.buttonIconFontSize} * 1.4) !important;
+    				min-height: calc(${options.buttonIconFontSize} * 1.4) !important;
+				}
+				div.gifa11y-pause-icon > svg,
+				div.gifa11y-play-icon > svg {
 					flex-shrink: 0 !important;
 					position: relative !important;
-					height: 24px !important;
-					width: 24px !important;
+					height: ${options.buttonIconSize} !important;
+					width: ${options.buttonIconSize} !important;
+					-webkit-transform: translate(0px,0px) !important;
 				}
 				span.gifa11y-warning {
 					background: darkred !important;
 					color: white !important;
 					padding: 5px !important;
-					font-size: 16px !important;
+					font-size: 1.1rem !important;
 					display: block !important;
 					font-family: Arial !important;
-					max-width: 400px !important;
+					max-width: 450px !important;
 				}
 				/* Increase target size of button. */
 				button.gifa11y-btn:before {
 					content: "" !important;
-					top: -8.5px !important;
-					left: -8.5px !important;
-					height: 50px !important;
-					width: 50px !important;
+					inset: -8.5px !important;
+					min-height: 50px !important;
+					min-width: 50px !important;
 					position: absolute !important;
 				}
 				canvas.gifa11y-canvas {
@@ -443,4 +482,4 @@ class Gifa11y {
 		};
 		this.initialize();
 	}
-};
+}

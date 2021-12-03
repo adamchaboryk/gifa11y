@@ -11,7 +11,7 @@ Easily add pause buttons to your GIFs. This script is intended for shorter GIFs 
   - Respects `prefers-reduced-motion` media query
 - Vanilla JavaScript, no dependencies
   
-▶️ [View Gifa11y demo](https://adamchaboryk.github.io/gifa11y/)... or [view demo on CodePen](https://codepen.io/adamchaboryk/pen/WNZbqNz) to see HTML before Gifa11y does its magic.
+▶️ [View Gifa11y demo](https://adamchaboryk.github.io/gifa11y/)
 ## Example installation
 Refer to **Props** to easily customize.
   
@@ -35,6 +35,12 @@ Refer to **Props** to easily customize.
 |`buttonBackgroundHover`|'rebeccapurple'|*String:* Any hexcode, rgb value, CSS colour keyword.|
 |`buttonIconColor`|'white'|*String:* Any hexcode, rgb value, CSS colour keyword.|
 |`buttonFocusColor`|'#00e7ffad'|*String:* Any hexcode, rgb value, CSS colour keyword.|
+|`buttonSvgSize`|'1.5rem'|*String:* Adjust height and width of SVG.|
+|`buttonIconFontSize`|'1rem'|*String:* Adjust `font-size` of an icon font (if passing an icon font via prop). E.g. `<i class="fas fa-play"></i>`|
+|`buttonPlayIconID`|*' '*|*String:* Supply your own play icon with an existing element on the page via it's unique `id`. |
+|`buttonPauseIconID`|*' '*|*String:* Supply your own pause icon with an existing element on the page via it's unique `id`|
+|`buttonPlayIconHTML`|*' '*|*String:* Supply your own play icon using an icon font or SVG. e.g. `<i class="fas fa-play"></i>`|
+|`buttonPauseIconHTML`|*' '*,|*String:* Supply your own pause icon using an icon font or SVG. e.g. `<i class="fas fa-pause"></i>`|
 |`container`|'body'|*String:* Add a pause button to GIFs within a specific area only. E.g. pass `main` for main content area.|
 |`exclusions`|*' '*|*String:* Ignore specific GIFs or regions. Use commas to separate. E.g. `.jumbotron`|	
 |`gifa11yOff`|*'.gifa11y-off'*|*String:* Don't run Gifa11y if page contains class/selector. E.g. `.authorMode`|
