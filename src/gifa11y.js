@@ -398,8 +398,8 @@ class Gifa11y {
 					});
 					allBtns.forEach(($el) => {
 						let alt = $el.getAttribute('data-gifa11y-alt'),
-							play = $el.querySelector('svg path.gifa11y-play-icon'),
-							pause = $el.querySelector('svg path.gifa11y-pause-icon');
+							play = $el.querySelector('.gifa11y-play-icon'),
+							pause = $el.querySelector('.gifa11y-pause-icon');
 						play.style.display = playDisplay;
 						pause.style.display = pauseDisplay;
 						$el.setAttribute('data-gifa11y-state', currentState);
