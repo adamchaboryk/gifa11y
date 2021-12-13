@@ -80,7 +80,7 @@ class Gifa11y {
 			const maincontainer = document.querySelector(options.container),
 				allGifs = Array.from(
 					maincontainer.querySelectorAll(
-						'img[src$=".gif"]:not([src*="gifa11y-ignore"])'
+						'img[src$=".gif"]:not([src*="gifa11y-ignore"]), img[src$=".webp"]:not([src*="gifa11y-ignore"])'
 					)
 				),
 				excludeGifs = Array.from(
@@ -108,8 +108,8 @@ class Gifa11y {
 				let ext;
 				ext = $el.src.split('.');
 				ext = ext[ext.length - 1].toLowerCase();
-				ext = ext.substring(0, 3);
-				if (ext === 'gif') {
+				ext = ext.substring(0, 4);				
+				if (ext === 'gif' || ext === 'webp') {
 					const canvas = document.createElement('canvas');
 
 					//Calculate total border width... otherwise layout shifts.
