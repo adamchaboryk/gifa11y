@@ -400,6 +400,31 @@
 					</div>
 					<div class="col-lg-4 mb-3 d-flex align-items-stretch">
 						<div class="card">
+							<p class="pt-4 text-center">
+								<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+								  Show GIF
+								</button>
+							  </p>
+							  <div class="collapse p-2" id="collapseExample">
+								<div class="card card-body">
+									<img
+										loading="lazy"
+										src="https://media.giphy.com/media/RoFXqXWN639Qs/giphy.gif"
+										alt="Waterfall within a lush green forest."
+										class="img-overlay-image img-fluid card-img-top"
+									/>
+								</div>
+							  </div>
+							<div class="card-body">
+								<h3 class="card-title h5">Collapsed content</h3>
+								<p class="card-text">
+									Gifa11y uses <kbd>clientWidth</kbd> to determine width of images. When an image is hidden or within collapsed content, the <kbd>clientWidth</kbd> will equal 0. As a fallback, Gifa11y will rely on <kbd>naturalWidth</kbd> to set the width of the generated canvas element so it displays properly.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 mb-3 d-flex align-items-stretch">
+						<div class="card">
 							<img
 								loading="lazy"
 								src="https://media.giphy.com/media/cFkiFMDg3iFoI/giphy.gif"
@@ -445,10 +470,10 @@
 				</div>
 			</footer>
 		</div>
-		<script src="https://cdn.jsdelivr.net/gh/adamchaboryk/gifa11y@1.0.3/src/gifa11y.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/gh/adamchaboryk/gifa11y@1.0.4/src/gifa11y.min.js"></script>
 		<script src="https://unpkg.com/@popperjs/core@2"></script>
 		<script src="https://unpkg.com/tippy.js@6"></script>
-
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 		<script type="text/javascript">
 			var gifa11y = new Gifa11y({
 				container: 'main',

@@ -1,7 +1,7 @@
 /*
  * Gifa11y
  * @author: Adam Chaboryk
- * @version: 0.1
+ * @version: 1.0.4
  * @license: MIT
  */
 class Gifa11y {
@@ -132,11 +132,23 @@ class Gifa11y {
 							'width:' + gifWidth + 'px !important;'
 						);
 					} else {
-						//Why 0.5? Apparently canvas calculates from half a pixel... otherwise layout shifts. Thanks to: https://stackoverflow.com/a/13879402
-						canvas.width = $el.clientWidth + 0.5 + totalBorderWidth;
+
+						//If rendered or clientWidth of image is 0, use naturalWidth as fallback.
+						if ($el.clientWidth == 0) {
+							canvas.width = $el.naturalWidth + 0.5 + totalBorderWidth;
+						} else {
+							//Why 0.5? Apparently canvas calculates from half a pixel... otherwise layout shifts. Thanks to: https://stackoverflow.com/a/13879402
+							canvas.width = $el.clientWidth + 0.5 + totalBorderWidth;
+						}
 					}
 
-					canvas.height = $el.clientHeight + 0.5;
+					//If rendered or clientHeight of image is 0, use naturalHeight as fallback.
+					if ($el.clientHeight == 0) {
+						canvas.height = $el.naturalHeight + 0.5;
+					} else {
+						canvas.height = $el.clientHeight + 0.5;
+					}
+
 					canvas.setAttribute('role', 'img');
 
 					//Grab all classes from the original image.
@@ -476,6 +488,7 @@ class Gifa11y {
 				}
 				canvas.gifa11y-canvas {
 					object-fit: contain !important;
+					max-width: 100%;
 				}
 				`;
 			document.getElementsByTagName('head')[0].appendChild(stylesheet);
