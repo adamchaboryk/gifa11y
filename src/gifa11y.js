@@ -1,7 +1,7 @@
 /*
  * Gifa11y
  * @author: Adam Chaboryk
- * @version: 1.0.4
+ * @version: 1.0.5
  * @license: MIT
  */
 class Gifa11y {
@@ -80,7 +80,7 @@ class Gifa11y {
 			const maincontainer = document.querySelector(options.container),
 				allGifs = Array.from(
 					maincontainer.querySelectorAll(
-						'img[src$=".gif"]:not([src*="gifa11y-ignore"]), img[src$=".webp"]:not([src*="gifa11y-ignore"])'
+						'img[src$=".gif"]:not([src*="gifa11y-ignore"])'
 					)
 				),
 				excludeGifs = Array.from(
@@ -108,8 +108,8 @@ class Gifa11y {
 				let ext;
 				ext = $el.src.split('.');
 				ext = ext[ext.length - 1].toLowerCase();
-				ext = ext.substring(0, 4);				
-				if (ext === 'gif' || ext === 'webp') {
+				ext = ext.substring(0, 4);
+				if (ext === 'gif') {
 					const canvas = document.createElement('canvas');
 
 					//Calculate total border width... otherwise layout shifts.
@@ -424,7 +424,7 @@ class Gifa11y {
 		this.generateCSS = () => {
 			const stylesheet = document.createElement('style');
 			stylesheet.innerHTML = `
-				button.gifa11y-btn, 
+				button.gifa11y-btn,
 				span.gifa11y-warning {
 					all: unset;
 					box-sizing: border-box !important;
@@ -458,13 +458,15 @@ class Gifa11y {
 				div.gifa11y-pause-icon > i {
 					font-size: ${options.buttonIconFontSize} !important;
 					padding: 4px !important;
+					vertical-align: middle !important;
 					min-width: calc(${options.buttonIconFontSize} * 1.4) !important;
-    				min-height: calc(${options.buttonIconFontSize} * 1.4) !important;
+    			min-height: calc(${options.buttonIconFontSize} * 1.4) !important;
 				}
 				div.gifa11y-pause-icon > svg,
 				div.gifa11y-play-icon > svg {
 					flex-shrink: 0 !important;
 					position: relative !important;
+					vertical-align: middle !important;
 					height: ${options.buttonIconSize} !important;
 					width: ${options.buttonIconSize} !important;
 					-webkit-transform: translate(0px,0px) !important;
