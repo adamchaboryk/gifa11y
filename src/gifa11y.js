@@ -77,16 +77,16 @@ class Gifa11y {
 		};
 		this.findGifs = () => {
 			//Find GIFs within specified container.
-			const maincontainer = document.querySelector(options.container),
-				allGifs = Array.from(
-					maincontainer.querySelectorAll(
-						'img[src$=".gif"]:not([src*="gifa11y-ignore"])'
-					)
-				),
-				excludeGifs = Array.from(
-					maincontainer.querySelectorAll(options.exclusions)
-				),
-				filteredGifs = allGifs.filter(($el) => !excludeGifs.includes($el));
+      const maincontainer = document.querySelector(options.container),
+        allGifs = (maincontainer ? Array.from(
+          maincontainer.querySelectorAll(
+            'img[src$=".gif"]:not([src*="gifa11y-ignore"])'
+          )
+        ) : []),
+        excludeGifs = (maincontainer ? Array.from(
+          maincontainer.querySelectorAll(options.exclusions)
+        ) : []),
+        filteredGifs = allGifs.filter(($el) => !excludeGifs.includes($el));
 
 			filteredGifs.forEach(($gif, index) => {
 				$gifs[index] = $gif;
