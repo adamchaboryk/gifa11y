@@ -1,7 +1,7 @@
 /*
  * Gifa11y
  * @author: Adam Chaboryk
- * @version: 1.0.5
+ * @version: 1.0.6
  * @license: MIT
  */
 class Gifa11y {
