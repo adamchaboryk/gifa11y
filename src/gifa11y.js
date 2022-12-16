@@ -142,12 +142,9 @@ class Gifa11y {
 						}
 					}
 
-					//If rendered or clientHeight of image is 0, use naturalHeight as fallback.
-					if ($el.clientHeight == 0) {
-						canvas.height = $el.naturalHeight + 0.5;
-					} else {
-						canvas.height = $el.clientHeight + 0.5;
-					}
+					// Calculate gif height keeping aspect ratio.
+					const newHeight = ( $el.naturalHeight / $el.naturalWidth ) * canvas.width;
+					canvas.height = newHeight;
 
 					canvas.setAttribute('role', 'img');
 
