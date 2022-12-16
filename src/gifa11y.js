@@ -144,7 +144,7 @@ class Gifa11y {
 
 					// Calculate gif height keeping aspect ratio.
 					const newHeight = ( $el.naturalHeight / $el.naturalWidth ) * canvas.width;
-					canvas.height = newHeight;
+					canvas.height = newHeight + 0.5;
 
 					canvas.setAttribute('role', 'img');
 
