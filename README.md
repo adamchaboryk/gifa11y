@@ -113,7 +113,7 @@ A light server for development is included. Any change inside `/src` folder file
 1. Clone this repo.
 2. Be sure you have node installed and up to date.
 3. Execute `npm install`
-4. In a terminal execute: `npm run serve`. Then open http://localhost:8080/demo/index.html in your browser.
+4. In a terminal execute: `npm run serve`. Then open http://localhost:8080/docs/index.html in your browser.
 
 ## Colophon
 I was looking for a simple solution to automatically add pause buttons to GIFs, although I could not find anything that was 100% automatic, accessible, and considered loading time of images. I came across a few clever methods which involve swapping a `.jpg` still - although ain't nobody got time for that. This script uses the `<canvas>` method to generate a still. I learned a few things developing this:
