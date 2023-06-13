@@ -19,9 +19,9 @@ const copyDirectory = async (src, dest) => {
 };
 
 (async () => {
-  copyDirectory('./dist/js', './demo/assets/js');
-  copyDirectory('./dist/css', './demo/assets/css');
+  copyDirectory('./dist/js', './docs/assets/js');
+  copyDirectory('./dist/css', './docs/assets/css');
 
-  const scriptSource = await readFile('./demo/script.js', 'utf8');
-  await writeFile('./demo/script.js', scriptSource.replace(/\.\.\/dist\//g, 'assets/'), 'utf8');
+  const scriptSource = await readFile('./docs/script.js', 'utf8');
+  await writeFile('./docs/script.js', scriptSource.replace(/\.\.\/dist\//g, 'assets/'), 'utf8');
 })();

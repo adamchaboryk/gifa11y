@@ -1,0 +1,85 @@
+:root {
+  --gifa11y-font: system-ui, "Segoe UI", roboto, helvetica, arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+/* Mini CSS Reset */
+button.gifa11y-btn::before,
+button.gifa11y-btn::after,
+button.gifa11y-btn {
+  all: unset;
+  box-sizing: border-box;
+}
+
+/* Button style */
+button.gifa11y-btn {
+  position: absolute;
+  z-index: 500;
+  display: block;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 4px;
+  margin: 12px;
+  line-height: normal;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.3098039216);
+  transition: all 0.2s ease-in-out;
+}
+
+button.gifa11y-btn.gifa11y-v1 {
+  border-radius: 50% !important;
+}
+
+button.gifa11y-btn.gifa11y-v2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 5px;
+  align-content: center;
+}
+
+button.gifa11y-btn.gifa11y-v2::after {
+  display: inline-block;
+  padding-right: 3px;
+  padding-left: 3px;
+  font-family: var(--gifa11y-font);
+  font-weight: 600;
+  line-height: 0;
+  content: "GIF";
+}
+
+button.gifa11y-btn::before {
+  position: absolute;
+  min-width: 50px;
+  min-height: 50px;
+  content: "";
+  inset: -8.5px;
+}
+
+button.gifa11y-btn:focus {
+  outline: 3px solid transparent;
+}
+
+button.gifa11y-btn > i {
+  padding: 4px;
+  vertical-align: middle;
+}
+
+button.gifa11y-btn > svg {
+  position: relative;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+div.gifa11y-warning {
+  padding: 8px;
+  margin: 0;
+  font-family: var(--gifa11y-font);
+  font-size: 18px;
+  line-height: normal;
+  color: #fff;
+  background: #8b0000;
+}/*# sourceMappingURL=gifa11y.css.map */
