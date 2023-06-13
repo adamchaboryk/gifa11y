@@ -1,4 +1,4 @@
-import Gifa11y from '../docs/assets/js/gifa11y.esm.js';
+import Gifa11y from './assets/js/gifa11y.esm.js';
 
 const gifa11y = new Gifa11y({
   // buttonBackground: 'indigo',
