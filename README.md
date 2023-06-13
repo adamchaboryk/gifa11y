@@ -1,6 +1,10 @@
 # Gifa11y
 Easily add pause buttons to your GIFs. This script is intended for shorter GIFs that loop indefinitely. It only generates a still of the first frame.
 
+[![npm version](https://badge.fury.io/js/gifa11y.svg)](https://www.npmjs.com/package/gifa11y)
+![GitHub file size in bytes](https://img.shields.io/github/size/adamchaboryk/gifa11y/dist/js/gifa11y.umd.min.js)
+![GitHub](https://img.shields.io/github/license/adamchaboryk/gifa11y)
+
 - Automatic
   - Generates a still using `<canvas>` element
   - No need to upload png/jpeg "still" of GIF
@@ -12,8 +16,6 @@ Easily add pause buttons to your GIFs. This script is intended for shorter GIFs 
 - Vanilla JavaScript
 - Customizable
 - Size: 8 KB
-
-Available on NPM: `npm i gifa11y`
 
 ▶️ [View Gifa11y demo](https://adamchaboryk.github.io/gifa11y/)
 
