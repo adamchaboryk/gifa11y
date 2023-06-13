@@ -1,6 +1,6 @@
 {
   "name": "gifa11y",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Gifa11y is a customizable vanilla javascript plugin that easily adds accessible play/pause buttons to animated GIFs.",
   "main": "src/js/gifa11y.js",
   "author": "Adam Chaboryk",

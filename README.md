@@ -11,7 +11,9 @@ Easily add pause buttons to your GIFs. This script is intended for shorter GIFs 
   - Respects `prefers-reduced-motion` media query
 - Vanilla JavaScript
 - Customizable
-- Size: 8 KB minified
+- Size: 8 KB
+
+Available on NPM: `npm i gifa11y`
 
 ▶️ [View Gifa11y demo](https://adamchaboryk.github.io/gifa11y/)
 
@@ -34,7 +36,7 @@ var gifa11y = new Gifa11y({
 
 ### CDN (regular script/UMD):
 ```
-https://cdn.jsdelivr.net/gh/adamchaboryk/gifa11y@2.0.0/dist/js/gifa11y.umd.min.js
+https://cdn.jsdelivr.net/gh/adamchaboryk/gifa11y@2.0.1/dist/js/gifa11y.umd.min.js
 ```
 
 ## Example installation (modules)
@@ -108,6 +110,8 @@ A button to toggle *all* GIFs. Add ````<button id="gifa11y-all"></button>```` wi
 - Button becomes clickable only after GIFs have fully loaded. Uses `disabled` attribute while page is loading.
 
 ## Development
+NPM: `npm i gifa11y`
+
 A light server for development is included. Any change inside `/src` folder files will trigger the build process for the files and will reload the page with the new changes. To use this environment:
 
 1. Clone this repo.
