@@ -38,7 +38,7 @@ var gifa11y = new Gifa11y({
 
 ### CDN (regular script/UMD):
 ```
-https://cdn.jsdelivr.net/gh/adamchaboryk/gifa11y@2.0.1/dist/js/gifa11y.umd.min.js
+https://cdn.jsdelivr.net/gh/adamchaboryk/gifa11y@2.0.2/dist/js/gifa11y.umd.min.js
 ```
 
 ## Example installation (modules)
