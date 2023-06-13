@@ -1,0 +1,59 @@
+{
+  "name": "gifa11y",
+  "version": "2.0.0",
+  "description": "Gifa11y is a customizable vanilla javascript plugin that easily adds accessible play/pause buttons to animated GIFs.",
+  "main": "src/js/gifa11y.js",
+  "author": "Adam Chaboryk",
+  "email": "adam@chaboryk.xyz",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adamchaboryk/gifa11y.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adamchaboryk/gifa11y/issues"
+  },
+  "homepage": "https://github.com/adamchaboryk/gifa11y",
+  "keywords": [
+    "Gifa11y",
+    "a11y",
+    "javascript",
+    "accessibility"
+  ],
+  "scripts": {
+    "build": "rimraf dist && node ./node_modules/rollup/dist/bin/rollup -c rollup.config.js",
+    "lint": "npm run lint:css && npm run lint:js",
+    "lint:js": "node ./node_modules/eslint/bin/eslint.js src",
+    "lint:css": "stylelint --config .stylelintrc.json -s scss \"src/scss/**/*.scss\"",
+    "serve": "npm run build && node ./demo.js && light-server -p 8080 -b localhost -s ./ -w \"src/**/* # npm run build && node ./demo.js # reload\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@rollup/plugin-replace": "^3.0.0",
+    "autoprefixer": "^10.2.6",
+    "caniuse-lite": "^1.0.30001418",
+    "cssnano": "^5.0.6",
+    "eslint": "^7.30.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "light-server": "^2.9.1",
+    "postcss": "^8.3.10",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.52.7",
+    "rollup-plugin-import-css": "^3.0.2",
+    "rollup-plugin-sass": "^1.2.9",
+    "rollup-plugin-scss": "^3.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "sass": "^1.35.1",
+    "stylelint": "^15.7.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-config-standard-scss": "^9.0.0",
+    "stylelint-order": "^6.0.3",
+    "stylelint-scss": "^5.0.1"
+  }
+}
