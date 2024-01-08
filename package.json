@@ -1,6 +1,6 @@
 {
   "name": "gifa11y",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Gifa11y is a customizable vanilla javascript plugin that easily adds accessible play/pause buttons to animated GIFs.",
   "main": "src/js/gifa11y.js",
   "author": "Adam Chaboryk",
@@ -25,7 +25,7 @@
     "lint": "npm run lint:css && npm run lint:js",
     "lint:js": "node ./node_modules/eslint/bin/eslint.js src",
     "lint:css": "stylelint --config .stylelintrc.json -s scss \"src/scss/**/*.scss\"",
-    "serve": "npm run build && node ./docs.js && light-server -p 8080 -b localhost -s ./ -w \"src/**/* # npm run build && node ./docs.js # reload\"",
+    "start": "npm run build && node ./docs.js && light-server -p 8080 -b localhost -s ./ -w \"src/**/* # npm run build && node ./docs.js # reload\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {

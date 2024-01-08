@@ -1,7 +1,56 @@
-export default function generateButtons(
-  gif,
-  option,
-) {
+import generalStyles from '../../../dist/css/gifa11y.min.css';
+
+// Create web component container.
+export class Gifa11yButton extends HTMLElement {
+  constructor() {
+    super();
+    this.option = window.gifa11yOption;
+  }
+
+  connectedCallback() {
+    const shadow = this.attachShadow({ mode: 'open' });
+
+    // Styles
+    const style = document.createElement('style');
+    style.innerHTML = `
+      ${generalStyles}
+      button {
+        background: ${this.option.buttonBackground};
+        border: ${this.option.buttonBorder};
+        color: ${this.option.buttonIconColor};
+      }
+      button:hover, button:focus {
+        background: ${this.option.buttonBackgroundHover};
+      }
+      button:focus {
+        box-shadow: 0 0 0 5px ${this.option.buttonFocusColor};
+      }
+      i {
+        font-size: ${this.option.buttonIconFontSize};
+        min-width: calc(${this.option.buttonIconFontSize} * 1.4);
+        min-height: calc(${this.option.buttonIconFontSize} * 1.4);
+      }
+      svg {
+        height: ${this.option.buttonIconSize};
+        width: ${this.option.buttonIconSize};
+      }
+      button:after {
+        font-size: ${this.option.buttonIconFontSize};
+      }
+      .warning, .warning:hover {
+        border-radius: 5px;
+        background: #cf0000;
+        color: white;
+      }
+      .warning:after {
+        content: '${this.option.langAltWarning}';
+        padding: 5px;
+      }`;
+    shadow.appendChild(style);
+  }
+}
+
+export function generateButtons(gif, option) {
   const image = gif;
   const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const findCanvas = image.nextElementSibling;
@@ -29,6 +78,9 @@ export default function generateButtons(
     currentState = 'playing';
   }
 
+  // Create button
+  const pauseButton = document.createElement('button');
+
   // If alt is missing, indicate as such on button label and canvas element.
   let alt = image.getAttribute('alt');
   if (alt === null || alt === '' || alt === ' ') {
@@ -36,66 +88,58 @@ export default function generateButtons(
 
     // Give a friendly reminder to add alt text.
     if (option.missingAltWarning === true) {
-      const warning = document.createElement('div');
-      warning.classList.add('gifa11y-warning');
-      warning.innerHTML = option.langAltWarning;
-      findCanvas.after(warning);
+      pauseButton.classList.add('warning');
     }
   }
 
-  // Create button
-  const pauseButton = document.createElement('button');
-  pauseButton.classList.add('gifa11y-btn');
+  // Button properties
   pauseButton.setAttribute('aria-label', `${initialState} ${alt}`);
   pauseButton.setAttribute('data-gifa11y-state', currentState);
   pauseButton.setAttribute('data-gifa11y-alt', alt);
   pauseButton.innerHTML = `
-  <div class="gifa11y-pause-icon" aria-hidden="true" style="display:${pauseDisplay}"></div>
-  <div class="gifa11y-play-icon" aria-hidden="true" style="display:${playDisplay}"></div>`;
-  const pauseIcon = pauseButton.querySelector('.gifa11y-pause-icon');
-  const playIcon = pauseButton.querySelector('.gifa11y-play-icon');
+  <div class="pause" aria-hidden="true" style="display:${pauseDisplay}"></div>
+  <div class="play" aria-hidden="true" style="display:${playDisplay}"></div>`;
+  const pauseIcon = pauseButton.querySelector('.pause');
+  const playIcon = pauseButton.querySelector('.play');
 
   // Preferred style.
   if (option.showGifText === false) {
-    pauseButton.classList.add('gifa11y-v1');
+    pauseButton.classList.add('v1');
   } else {
-    pauseButton.classList.add('gifa11y-v2');
+    pauseButton.classList.add('v2');
   }
 
-  // Default icons.
-  const defaultPlayIcon = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>';
-  const defaultPauseIcon = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/></svg>';
-
-  // Pause icon.
-  if (option.buttonPauseIconID.length > 1) {
+  /* Pause icon. */
+  if (option.buttonPauseIconID.length) {
     // If icon is supplied via ID on page.
     const customPauseIcon = document.getElementById(option.buttonPauseIconID).innerHTML;
     pauseIcon.innerHTML = customPauseIcon;
-  } else if (option.buttonPauseIconHTML.length > 1) {
+  } else if (option.buttonPauseIconHTML.length) {
     // If icon is supplied via icon font or HTML.
     pauseIcon.innerHTML = option.buttonPauseIconHTML;
   } else {
-    pauseIcon.innerHTML = defaultPauseIcon;
+    pauseIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/></svg>';
   }
 
-  // Play icon.
-  if (option.buttonPlayIconID.length > 1) {
+  /* Play icon. */
+  if (option.buttonPlayIconID.length) {
     // If icon is supplied via ID on page.
     const customPlayIcon = document.getElementById(option.buttonPlayIconID).innerHTML;
     playIcon.innerHTML = customPlayIcon;
-  } else if (option.buttonPlayIconHTML.length > 1) {
+  } else if (option.buttonPlayIconHTML.length) {
     // If icon is supplied via icon font or HTML.
     playIcon.innerHTML = option.buttonPlayIconHTML;
   } else {
-    playIcon.innerHTML = defaultPlayIcon;
+    playIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>';
   }
 
   // If gif is within a hyperlink, insert button before it.
-  let location = image.closest('a, button');
-  if (!location) location = image;
+  let location = image.closest('a, button') || image;
 
   // Inject into DOM.
-  location.insertAdjacentElement('beforebegin', pauseButton);
+  const instance = document.createElement('gifa11y-button');
+  location.insertAdjacentElement('beforebegin', instance);
+  instance.shadowRoot.appendChild(pauseButton);
 
   // Add functionality.
   pauseButton.addEventListener('click', (e) => {
@@ -103,8 +147,8 @@ export default function generateButtons(
     const state = getState === 'paused' ? 'playing' : 'paused';
     pauseButton.setAttribute('data-gifa11y-state', state);
 
-    const play = pauseButton.querySelector('.gifa11y-play-icon');
-    const pause = pauseButton.querySelector('.gifa11y-pause-icon');
+    const play = pauseButton.querySelector('.play');
+    const pause = pauseButton.querySelector('.pause');
 
     if (pauseButton.getAttribute('data-gifa11y-state') === 'paused') {
       image.style.display = 'none';

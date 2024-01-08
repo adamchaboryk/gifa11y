@@ -15,6 +15,8 @@ Easily add pause buttons to your GIFs. This script is intended for shorter GIFs 
   - Respects `prefers-reduced-motion` media query
 - Vanilla JavaScript
 - Customizable
+  - Customize colours and icons via props.
+  - Leverages web components to avoid style conflicts.
 - Size: 8 KB
 
 ▶️ [View Gifa11y demo](https://adamchaboryk.github.io/gifa11y/)
@@ -62,6 +64,7 @@ const gifa11y = new Gifa11y({
 |---|---|---|
 |`buttonBackground`|'indigo'|*String:* Any hexcode, rgb value, CSS colour keyword.|
 |`buttonBackgroundHover`|'rebeccapurple'|*String:* Any hexcode, rgb value, CSS colour keyword.|
+|`buttonBorder`|'2px solid #fff'|*String:* Specify the style, width, and color of an element's border.|
 |`buttonIconColor`|'white'|*String:* Any hexcode, rgb value, CSS colour keyword.|
 |`buttonFocusColor`|'#00e7ffad'|*String:* Any hexcode, rgb value, CSS colour keyword.|
 |`buttonIconSize`|'1.5rem'|*String:* Adjust height and width of SVG.|
@@ -119,7 +122,7 @@ A light server for development is included. Any change inside `/src` folder file
 1. Clone this repo.
 2. Be sure you have node installed and up to date.
 3. Execute `npm install`
-4. In a terminal execute: `npm run serve`. Then open http://localhost:8080/docs/index.html in your browser.
+4. In a terminal execute: `npm run start`. Then open http://localhost:8080/docs/index.html in your browser.
 
 ## Colophon
 I was looking for a simple solution to automatically add pause buttons to GIFs, although I could not find anything that was 100% automatic, accessible, and considered loading time of images. I came across a few clever methods which involve swapping a `.jpg` still - although ain't nobody got time for that. This script uses the `<canvas>` method to generate a still. I learned a few things developing this:

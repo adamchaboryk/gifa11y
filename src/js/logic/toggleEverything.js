@@ -35,15 +35,17 @@ export default function toggleEverything($gifs, option) {
       allCanvas.forEach(($el) => {
         $el.setAttribute('style', `display: ${playDisplay}`);
       });
-      const allButtons = document.querySelectorAll('button.gifa11y-btn');
+
+      const allButtons = document.querySelectorAll('gifa11y-button');
       allButtons.forEach(($el) => {
-        const alt = $el.getAttribute('data-gifa11y-alt');
-        const play = $el.querySelector('.gifa11y-play-icon');
-        const pause = $el.querySelector('.gifa11y-pause-icon');
+        const shadow = $el.shadowRoot.querySelector('button');
+        const alt = shadow.getAttribute('data-gifa11y-alt');
+        const play = shadow.querySelector('.play');
+        const pause = shadow.querySelector('.pause');
         play.style.display = playDisplay;
         pause.style.display = pauseDisplay;
-        $el.setAttribute('data-gifa11y-state', currentState);
-        $el.setAttribute('aria-label', `${ariaLabel} ${alt}`);
+        shadow.setAttribute('data-gifa11y-state', currentState);
+        shadow.setAttribute('aria-label', `${ariaLabel} ${alt}`);
       });
     });
   }
@@ -51,11 +53,7 @@ export default function toggleEverything($gifs, option) {
   // Only initialize if page contains toggle all on/off button.
   if (everythingButton !== null) {
     // Set initial page state based on media query and props.
-    if (
-      !mediaQuery
-      || mediaQuery.matches
-      || option.initiallyPaused === true
-    ) {
+    if (!mediaQuery || mediaQuery.matches || option.initiallyPaused === true) {
       html.setAttribute('data-gifa11y-all', 'paused');
       everythingButton.innerText = option.langPlayAllButton;
     } else {

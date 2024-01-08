@@ -1,14 +1,14 @@
 import findGifs from './logic/findGifs.js';
-import generateStyle from './logic/generateStyles.js';
 import generateStill from './logic/generateStill.js';
-import generateButtons from './logic/generateButtons.js';
+import { Gifa11yButton, generateButtons } from './logic/generateButtons.js';
 import toggleEverything from './logic/toggleEverything.js';
 
 export default class Gifa11y {
   constructor(options) {
     const defaultConfig = {
-      buttonBackground: 'indigo',
-      buttonBackgroundHover: 'rebeccapurple',
+      buttonBackground: '#072c7c',
+      buttonBackgroundHover: '#0a2051',
+      buttonBorder: '2px solid #fff',
       buttonIconColor: 'white',
       buttonFocusColor: '#00e7ffad',
       buttonIconSize: '1.5rem',
@@ -27,13 +27,15 @@ export default class Gifa11y {
       langPauseAllButton: 'Pause all GIFs',
       langPlayAllButton: 'Play all GIFs',
       langMissingAlt: 'Missing image description.',
-      langAltWarning: '&#9888; Error! Please add alternative text to GIF.',
+      langAltWarning: 'Error! Please add alt text to GIF.',
       missingAltWarning: true,
       showButtons: true,
       showGifText: false,
       target: '',
     };
     const option = { ...defaultConfig, ...options };
+    window.gifa11yOption = option;
+
     const $gifs = [];
 
     this.initialize = () => {
@@ -43,17 +45,17 @@ export default class Gifa11y {
         return gifa11yOff.trim().length > 0 ? document.querySelector(gifa11yOff) : false;
       };
       if (!checkRunPrevent()) {
+
+        // Register web component.
+        customElements.define('gifa11y-button', Gifa11yButton);
+
         document.addEventListener('DOMContentLoaded', () => {
           // Find and cache GIFs
           findGifs($gifs, option);
 
-          // If there are GIFs on the page, load styles.
-          if ($gifs.length) {
-            generateStyle(option);
-          }
-
           // Iterate through all GIFs after they finish loading.
           $gifs.forEach(($el) => {
+
             // Generate stills & play/pause buttons.
             const doMagic = () => {
               generateStill($el, option);
