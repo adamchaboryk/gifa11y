@@ -4,6 +4,7 @@ Easily add pause buttons to your GIFs. This script is intended for shorter GIFs 
 [![npm version](https://badge.fury.io/js/gifa11y.svg)](https://www.npmjs.com/package/gifa11y)
 ![GitHub file size in bytes](https://img.shields.io/github/size/adamchaboryk/gifa11y/dist/js/gifa11y.umd.min.js)
 ![GitHub](https://img.shields.io/github/license/adamchaboryk/gifa11y)
+![jsDelivr stats](https://data.jsdelivr.com/v1/package/gh/adamchaboryk/gifa11y/badge)
 
 - Automatic
   - Generates a still using `<canvas>` element
@@ -23,7 +24,19 @@ Easily add pause buttons to your GIFs. This script is intended for shorter GIFs 
 
 Alternatively check out [Gifa11y demo on CodePen](https://codepen.io/adamchaboryk/pen/WNZbqNz) to view HTML before Gifa11y does its magic. Experiment with different props and settings.
 
-## Example installation (regular script)
+## Install
+
+### CDN (regular script/UMD):
+```
+https://cdn.jsdelivr.net/gh/adamchaboryk/gifa11y@2.0.3/dist/js/gifa11y.umd.min.js
+```
+
+### NPM
+```
+npm i gifa11y
+```
+
+### Example install as regular script
 Refer to **Props** to easily customize. CSS styles for buttons are bundled with JavaScript.
 
 ```
@@ -38,12 +51,7 @@ var gifa11y = new Gifa11y({
 </script>
 ```
 
-### CDN (regular script/UMD):
-```
-https://cdn.jsdelivr.net/gh/adamchaboryk/gifa11y@2.0.2/dist/js/gifa11y.umd.min.js
-```
-
-## Example installation (modules)
+### Example install via modules
 Refer to **Props** to easily customize.
 
 ```
@@ -56,6 +64,31 @@ const gifa11y = new Gifa11y({
   buttonIconColor: 'white'
 });
 </script>
+```
+
+### Example install for Eleventy (11ty)
+Here's an example recipe for selectively adding Gifa11y to web pages that contain `.gif` images. This approach helps minimize HTTP requests and provides the flexibility to easily remove the library if necessary. For advanced usage, you can also install Gifa11y via npm and replace the CDN link to have Gifa11y inline on your page.
+
+```
+eleventyConfig.addTransform("gifa11y", async function (content) {
+    if (this.page.outputPath && this.page.outputPath.endsWith(".html")) {
+      if (content.includes("<img") && content.includes(".gif")) {
+        const gifa11y =
+          `<script src="https://cdn.jsdelivr.net/gh/adamchaboryk/gifa11y@2.0.3/dist/js/gifa11y.umd.min.js"></script>
+          <script>
+          // Customize props.
+          const gifa11y = new Gifa11y({
+            showGifText: true,
+            buttonBackground: 'var(--background-secondary)',
+            buttonBackgroundHover: 'var(--background)',
+            buttonIconColor: 'var(--text)',
+          });
+        </script>`;
+        content = content.replace("</body>", `${gifa11y}</body>`);
+      }
+    }
+    return content;
+  });
 ```
 
 ## Props
