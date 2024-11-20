@@ -32,6 +32,7 @@ export default class Gifa11y {
       showButtons: true,
       showGifText: false,
       target: '',
+      useDevicePixelRatio: false,
     };
     const option = { ...defaultConfig, ...options };
     window.gifa11yOption = option;
@@ -45,7 +46,6 @@ export default class Gifa11y {
         return gifa11yOff.trim().length > 0 ? document.querySelector(gifa11yOff) : false;
       };
       if (!checkRunPrevent()) {
-
         // Register web component.
         customElements.define('gifa11y-button', Gifa11yButton);
 
@@ -55,7 +55,6 @@ export default class Gifa11y {
 
           // Iterate through all GIFs after they finish loading.
           $gifs.forEach(($el) => {
-
             // Generate stills & play/pause buttons.
             const doMagic = () => {
               generateStill($el, option);

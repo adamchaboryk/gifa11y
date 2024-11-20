@@ -134,7 +134,7 @@ export function generateButtons(gif, option) {
   }
 
   // If gif is within a hyperlink, insert button before it.
-  let location = image.closest('a, button') || image;
+  const location = image.closest('a, button, [role="link"], [role="button"]') || image;
 
   // Inject into DOM.
   const instance = document.createElement('gifa11y-button');

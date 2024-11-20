@@ -5,7 +5,8 @@ export default function toggleEverything($gifs, option) {
 
   function toggleAll() {
     everythingButton.addEventListener('click', () => {
-      const state = html.getAttribute('data-gifa11y-all') === 'paused' ? 'playing' : 'paused';
+      const state = html.getAttribute('data-gifa11y-all') === 'paused'
+        ? 'playing' : 'paused';
       html.setAttribute('data-gifa11y-all', state);
 
       let playDisplay;
@@ -28,12 +29,14 @@ export default function toggleEverything($gifs, option) {
       }
 
       $gifs.forEach(($el) => {
-        $el.setAttribute('style', `display: ${pauseDisplay}`);
+        const gif = $el;
+        gif.style.display = pauseDisplay;
       });
 
       const allCanvas = document.querySelectorAll('[data-gifa11y-canvas]');
       allCanvas.forEach(($el) => {
-        $el.setAttribute('style', `display: ${playDisplay}`);
+        const canvas = $el;
+        canvas.style.display = playDisplay;
       });
 
       const allButtons = document.querySelectorAll('gifa11y-button');
@@ -53,7 +56,7 @@ export default function toggleEverything($gifs, option) {
   // Only initialize if page contains toggle all on/off button.
   if (everythingButton !== null) {
     // Set initial page state based on media query and props.
-    if (!mediaQuery || mediaQuery.matches || option.initiallyPaused === true) {
+    if (!mediaQuery || mediaQuery.matches || option.initiallyPaused) {
       html.setAttribute('data-gifa11y-all', 'paused');
       everythingButton.innerText = option.langPlayAllButton;
     } else {

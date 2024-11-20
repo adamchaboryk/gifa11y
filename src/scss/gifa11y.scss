@@ -48,10 +48,9 @@ button {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  place-content: center center;
   text-align: center;
   border-radius: 5px;
-  align-content: center;
 
   &::after {
     display: inline-block;

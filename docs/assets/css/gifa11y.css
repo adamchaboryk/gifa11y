@@ -45,10 +45,9 @@ button:focus {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  place-content: center center;
   text-align: center;
   border-radius: 5px;
-  align-content: center;
 }
 .v2::after {
   display: inline-block;

@@ -1,4 +1,4 @@
-/*! Gifa11y 2.0.3 | @author Adam Chaboryk © 2021 - 2024 | @license MIT | @contact adam@chaboryk.xyz | https://github.com/adamchaboryk/gifa11y */
+/*! Gifa11y 2.0.4 | @author Adam Chaboryk © 2021 - 2024 | @license MIT | @contact adam@chaboryk.xyz | https://github.com/adamchaboryk/gifa11y */
 function findGifs($gifs, option) {
   // Find GIFs within specified container, fallback to 'body'.
   const root = document.querySelector(option.container);
@@ -19,49 +19,70 @@ function findGifs($gifs, option) {
 
 function generateStill(gif, option) {
   const image = gif;
+
+  // Initial setup of canvas element.
   const canvas = document.createElement('canvas');
   canvas.setAttribute('role', 'image');
   canvas.setAttribute('aria-label', image.alt);
   canvas.setAttribute('data-gifa11y-canvas', '');
-  const { width } = image;
-  const { height } = image;
-  canvas.width = width;
-  canvas.height = (image.naturalHeight / image.naturalWidth) * width + 0.5;
   canvas.hidden = false;
+
+  // Fetch original image dimensions directly from the image.
+  const { naturalWidth, naturalHeight } = image;
+
+  // Use device pixel ratio for high-resolution rendering.
+  const pixelRatio = window.devicePixelRatio || 1;
+
+  // Set the canvas internal resolution to match the scaled dimensions.
+  canvas.width = option.useDevicePixelRatio
+    ? naturalWidth * pixelRatio : naturalWidth;
+  canvas.height = option.useDevicePixelRatio
+    ? naturalHeight * pixelRatio : naturalHeight;
+
+  // Match the canvas style size to the image's current dimensions.
+  const setCanvasSize = () => {
+    const computedStyle = window.getComputedStyle(image);
+    canvas.style.width = computedStyle.width;
+    canvas.style.height = computedStyle.height;
+  };
+  setCanvasSize();
+
+  // Make responsive.
+  window.addEventListener('resize', setCanvasSize);
+
+  // Draw the image onto the canvas with precise dimensions.
+  const context = canvas.getContext('2d', { alpha: false });
+  if (option.useDevicePixelRatio) context.scale(pixelRatio, pixelRatio);
+  context.drawImage(image, 0, 0, naturalWidth, naturalHeight);
+
+  // Inject the canvas into the DOM right before the image.
   const parent = image.parentNode;
   parent.insertBefore(canvas, image);
-  canvas.getContext('2d').drawImage(image, 0, 0, width, height);
   image.after(canvas);
 
-  // Grab all classes from the original image.
-  if (option.inheritClasses === true) {
-    let classes = image.getAttribute('class');
-    if (!classes) classes = '';
+  // Inherit CSS classes from the image if specified.
+  if (option.inheritClasses) {
+    const classes = image.getAttribute('class') || '';
     canvas.setAttribute('class', classes);
   }
 
   // Alt text missing warning.
-  let alt = image.getAttribute('alt');
-  if (alt === null || alt === '' || alt === ' ') alt = option.langMissingAlt;
+  let altText = image.getAttribute('alt')?.trim();
+  if (!altText) altText = option.langMissingAlt;
 
   // If content author wants GIF to be paused initially (or prefers reduced motion).
   const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (
-    !mediaQuery
-    || mediaQuery.matches
+  const shouldPause = mediaQuery.matches
     || image.classList.contains('gifa11y-paused')
-    || image.src.indexOf('gifa11y-paused') > -1
-    || option.initiallyPaused === true
-  ) {
-    image.style.display = 'none';
-    image.setAttribute('data-gifa11y-state', 'paused');
-  } else {
-    canvas.style.display = 'none';
-    image.setAttribute('data-gifa11y-state', 'playing');
-  }
+    || image.src.includes('gifa11y-paused')
+    || option.initiallyPaused;
+
+  image.style.display = shouldPause ? 'none' : '';
+  canvas.style.display = shouldPause ? '' : 'none';
+  image.setAttribute('data-gifa11y-state', shouldPause ? 'paused' : 'playing');
 }
 
-var generalStyles = ":host{--gifa11y-font:system-ui,\"Segoe UI\",roboto,helvetica,arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\"}*,:after,:before{box-sizing:border-box}button{align-items:center;box-shadow:0 0 16px 0 rgba(0,0,0,.31);cursor:pointer;display:flex;justify-content:center;line-height:normal;margin:12px;min-height:36px;min-width:36px;padding:4px;position:absolute;text-align:center;transition:all .2s ease-in-out;z-index:500}button:before{content:\"\";inset:-8.5px;min-height:50px;min-width:50px;position:absolute}button:focus{outline:3px solid transparent}.v1{border-radius:50%}.v2{align-content:center;align-items:center;border-radius:5px;display:flex;flex-wrap:wrap;justify-content:center;text-align:center}.v2:after{content:\"GIF\";display:inline-block;font-family:var(--gifa11y-font);font-weight:600;line-height:0;padding-left:3px;padding-right:3px}i{padding:4px}i,svg{vertical-align:middle}svg{display:block;flex-shrink:0;position:relative}";
+var generalStyles = ":host{--gifa11y-font:system-ui,\"Segoe UI\",roboto,helvetica,arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\"}*,:after,:before{box-sizing:border-box}button{align-items:center;box-shadow:0 0 16px 0 rgba(0,0,0,.31);cursor:pointer;display:flex;justify-content:center;line-height:normal;margin:12px;min-height:36px;min-width:36px;padding:4px;position:absolute;text-align:center;transition:all .2s ease-in-out;z-index:500}button:before{content:\"\";inset:-8.5px;min-height:50px;min-width:50px;position:absolute}button:focus{outline:3px solid transparent}.v1{border-radius:50%}.v2{align-items:center;border-radius:5px;display:flex;flex-wrap:wrap;place-content:center center;text-align:center}.v2:after{content:\"GIF\";display:inline-block;font-family:var(--gifa11y-font);font-weight:600;line-height:0;padding-left:3px;padding-right:3px}i{padding:4px}i,svg{vertical-align:middle}svg{display:block;flex-shrink:0;position:relative}";
 
 // Create web component container.
 class Gifa11yButton extends HTMLElement {
@@ -197,7 +218,7 @@ function generateButtons(gif, option) {
   }
 
   // If gif is within a hyperlink, insert button before it.
-  let location = image.closest('a, button') || image;
+  const location = image.closest('a, button, [role="link"], [role="button"]') || image;
 
   // Inject into DOM.
   const instance = document.createElement('gifa11y-button');
@@ -237,7 +258,8 @@ function toggleEverything($gifs, option) {
 
   function toggleAll() {
     everythingButton.addEventListener('click', () => {
-      const state = html.getAttribute('data-gifa11y-all') === 'paused' ? 'playing' : 'paused';
+      const state = html.getAttribute('data-gifa11y-all') === 'paused'
+        ? 'playing' : 'paused';
       html.setAttribute('data-gifa11y-all', state);
 
       let playDisplay;
@@ -260,12 +282,14 @@ function toggleEverything($gifs, option) {
       }
 
       $gifs.forEach(($el) => {
-        $el.setAttribute('style', `display: ${pauseDisplay}`);
+        const gif = $el;
+        gif.style.display = pauseDisplay;
       });
 
       const allCanvas = document.querySelectorAll('[data-gifa11y-canvas]');
       allCanvas.forEach(($el) => {
-        $el.setAttribute('style', `display: ${playDisplay}`);
+        const canvas = $el;
+        canvas.style.display = playDisplay;
       });
 
       const allButtons = document.querySelectorAll('gifa11y-button');
@@ -285,7 +309,7 @@ function toggleEverything($gifs, option) {
   // Only initialize if page contains toggle all on/off button.
   if (everythingButton !== null) {
     // Set initial page state based on media query and props.
-    if (!mediaQuery || mediaQuery.matches || option.initiallyPaused === true) {
+    if (!mediaQuery || mediaQuery.matches || option.initiallyPaused) {
       html.setAttribute('data-gifa11y-all', 'paused');
       everythingButton.innerText = option.langPlayAllButton;
     } else {
@@ -338,6 +362,7 @@ class Gifa11y {
       showButtons: true,
       showGifText: false,
       target: '',
+      useDevicePixelRatio: false,
     };
     const option = { ...defaultConfig, ...options };
     window.gifa11yOption = option;
@@ -351,7 +376,6 @@ class Gifa11y {
         return gifa11yOff.trim().length > 0 ? document.querySelector(gifa11yOff) : false;
       };
       if (!checkRunPrevent()) {
-
         // Register web component.
         customElements.define('gifa11y-button', Gifa11yButton);
 
@@ -361,7 +385,6 @@ class Gifa11y {
 
           // Iterate through all GIFs after they finish loading.
           $gifs.forEach(($el) => {
-
             // Generate stills & play/pause buttons.
             const doMagic = () => {
               generateStill($el, option);
