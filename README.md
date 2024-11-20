@@ -113,8 +113,9 @@ eleventyConfig.addTransform("gifa11y", async function (content) {
 |`initiallyPaused`|'false'|*Boolean:* If you want *all* GIFs to be paused at first.|
 |`missingAltWarning`|'true'|*Boolean:* warn content author if they are missing an alt attribute on GIF. Appended to GIF.|
 |`showButtons`|`true`|*Boolean*: Show or hide Play/Pause buttons.|
-|`showGifText`|`false`|*Boolean* Show or hide GIF text within buttons.|
+|`showGifText`|`false`|*Boolean:* Show or hide GIF text within buttons.|
 |`target`|''|*String*: Using CSS selectors, target other images like `.webp` (that don't end with `.gif`), for example `target: 'img[src$=".webp"]'`|
+|`useDevicePixelRatio`|`false`|*Boolean:* Use [window.devicePixelRatio](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio) property to help with [scaling for high resolution displays.](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays)|
 
 ### Language / i18n
 |Property|Default|Description|
