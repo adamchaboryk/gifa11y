@@ -7,14 +7,14 @@ export default function toggleAll(newState = 'detect') {
   if (newState === 'detect') {
     newState = html.getAttribute('data-gifa11y-all') === 'paused'
       ? 'playing' : 'paused';
+    const gifA11ySet = new CustomEvent('gifA11ySet', {
+      detail: {
+        newState: newState,
+        target: 'all',
+      },
+    });
+    window.dispatchEvent(gifA11ySet);
   }
-  const gifA11ySet = new CustomEvent('gifA11ySet', {
-    detail: {
-      newState: newState,
-      target: 'all',
-    },
-  });
-  window.dispatchEvent(gifA11ySet);
 
   html.setAttribute('data-gifa11y-all', newState);
 
@@ -28,14 +28,18 @@ export default function toggleAll(newState = 'detect') {
     pauseDisplay = 'none';
     currentState = 'paused';
     ariaLabel = option.langPlay;
-    everythingButton.innerText = option.langPlayAllButton;
+    if (everythingButton) {
+      everythingButton.innerText = option.langPlayAllButton;
+    }
     window.gifa11yOption.initiallyPaused = true; // For later loads.
   } else {
     playDisplay = 'none';
     pauseDisplay = 'block';
     currentState = 'playing';
     ariaLabel = option.langPause;
-    everythingButton.innerText = option.langPauseAllButton;
+    if (everythingButton) {
+      everythingButton.innerText = option.langPauseAllButton;
+    }
     window.gifa11yOption.initiallyPaused = false;
   }
 

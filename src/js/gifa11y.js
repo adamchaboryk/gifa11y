@@ -2,6 +2,7 @@ import findGifs from './logic/findGifs.js';
 import generateStill from './logic/generateStill.js';
 import { Gifa11yButton, generateButtons } from './logic/generateButtons.js';
 import everythingToggle from './logic/everythingToggle.js';
+import toggleAll from "./logic/toggleAll";
 
 export default class Gifa11y {
   constructor(options) {
@@ -9,6 +10,7 @@ export default class Gifa11y {
       buttonBackground: '#072c7c',
       buttonBackgroundHover: '#0a2051',
       buttonBorder: '2px solid #fff',
+      buttonBorderRadius: '50%',
       buttonIconColor: 'white',
       buttonFocusColor: '#00e7ffad',
       buttonIconSize: '1.5rem',
@@ -64,6 +66,10 @@ export default class Gifa11y {
         }
         window.a11ygifs.push($el);
       });
+    }
+
+    this.setAll = (newState) => {
+      toggleAll(newState);
     }
 
     this.initialize = () => {

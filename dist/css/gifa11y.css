@@ -33,12 +33,8 @@ button::before {
   content: "";
   inset: -8.5px;
 }
-button:focus {
+button:focus-visible {
   outline: 3px solid transparent;
-}
-
-.v1 {
-  border-radius: 50%;
 }
 
 .v2 {

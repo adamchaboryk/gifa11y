@@ -82,7 +82,7 @@ function generateStill(gif, option) {
   image.setAttribute('data-gifa11y-state', shouldPause ? 'paused' : 'playing');
 }
 
-var generalStyles = ":host{--gifa11y-font:system-ui,\"Segoe UI\",roboto,helvetica,arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\"}*,:after,:before{box-sizing:border-box}button{align-items:center;box-shadow:0 0 16px 0 rgba(0,0,0,.31);cursor:pointer;display:flex;justify-content:center;line-height:normal;margin:12px;min-height:36px;min-width:36px;padding:4px;position:absolute;text-align:center;transition:all .2s ease-in-out;z-index:500}button:before{content:\"\";inset:-8.5px;min-height:50px;min-width:50px;position:absolute}button:focus{outline:3px solid transparent}.v1{border-radius:50%}.v2{align-items:center;border-radius:5px;display:flex;flex-wrap:wrap;place-content:center center;text-align:center}.v2:after{content:\"GIF\";display:inline-block;font-family:var(--gifa11y-font);font-weight:600;line-height:0;padding-left:3px;padding-right:3px}i{padding:4px}i,svg{vertical-align:middle}svg{display:block;flex-shrink:0;position:relative}";
+var generalStyles = ":host{--gifa11y-font:system-ui,\"Segoe UI\",roboto,helvetica,arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\"}*,:after,:before{box-sizing:border-box}button{align-items:center;box-shadow:0 0 16px 0 rgba(0,0,0,.31);cursor:pointer;display:flex;justify-content:center;line-height:normal;margin:12px;min-height:36px;min-width:36px;padding:4px;position:absolute;text-align:center;transition:all .2s ease-in-out;z-index:500}button:before{content:\"\";inset:-8.5px;min-height:50px;min-width:50px;position:absolute}button:focus-visible{outline:3px solid transparent}.v2{align-items:center;border-radius:5px;display:flex;flex-wrap:wrap;place-content:center center;text-align:center}.v2:after{content:\"GIF\";display:inline-block;font-family:var(--gifa11y-font);font-weight:600;line-height:0;padding-left:3px;padding-right:3px}i{padding:4px}i,svg{vertical-align:middle}svg{display:block;flex-shrink:0;position:relative}";
 
 function toggleAll(newState = 'detect') {
   const option = window.gifa11yOption;
@@ -93,14 +93,14 @@ function toggleAll(newState = 'detect') {
   if (newState === 'detect') {
     newState = html.getAttribute('data-gifa11y-all') === 'paused'
       ? 'playing' : 'paused';
+    const gifA11ySet = new CustomEvent('gifA11ySet', {
+      detail: {
+        newState: newState,
+        target: 'all',
+      },
+    });
+    window.dispatchEvent(gifA11ySet);
   }
-  const gifA11ySet = new CustomEvent('gifA11ySet', {
-    detail: {
-      newState: newState,
-      target: 'all',
-    },
-  });
-  window.dispatchEvent(gifA11ySet);
 
   html.setAttribute('data-gifa11y-all', newState);
 
@@ -114,14 +114,18 @@ function toggleAll(newState = 'detect') {
     pauseDisplay = 'none';
     currentState = 'paused';
     ariaLabel = option.langPlay;
-    everythingButton.innerText = option.langPlayAllButton;
+    if (everythingButton) {
+      everythingButton.innerText = option.langPlayAllButton;
+    }
     window.gifa11yOption.initiallyPaused = true; // For later loads.
   } else {
     playDisplay = 'none';
     pauseDisplay = 'block';
     currentState = 'playing';
     ariaLabel = option.langPause;
-    everythingButton.innerText = option.langPauseAllButton;
+    if (everythingButton) {
+      everythingButton.innerText = option.langPauseAllButton;
+    }
     window.gifa11yOption.initiallyPaused = false;
   }
 
@@ -168,11 +172,14 @@ class Gifa11yButton extends HTMLElement {
         border: ${this.option.buttonBorder};
         color: ${this.option.buttonIconColor};
       }
-      button:hover, button:focus {
+      button:hover, button:focus-visible {
         background: ${this.option.buttonBackgroundHover};
       }
-      button:focus {
+      button:focus-visible {
         box-shadow: 0 0 0 5px ${this.option.buttonFocusColor};
+      }
+      .v1 {
+        border-radius: ${this.option.buttonBorderRadius};
       }
       i {
         font-size: ${this.option.buttonIconFontSize};
@@ -246,10 +253,12 @@ function generateButtons(gif, option) {
   pauseButton.setAttribute('data-gifa11y-state', currentState);
   pauseButton.setAttribute('data-gifa11y-alt', alt);
   pauseButton.innerHTML = `
-  <div class="pause" aria-hidden="true" style="display:${pauseDisplay}"></div>
+  <div class="pause" aria-hidden="true"></div>
   <div class="play" aria-hidden="true" style="display:${playDisplay}"></div>`;
   const pauseIcon = pauseButton.querySelector('.pause');
+  pauseIcon.style.display = pauseDisplay;
   const playIcon = pauseButton.querySelector('.play');
+  playIcon.style.display = playDisplay;
 
   // Preferred style.
   if (option.showGifText === false) {
@@ -382,6 +391,7 @@ class Gifa11y {
       buttonBackground: '#072c7c',
       buttonBackgroundHover: '#0a2051',
       buttonBorder: '2px solid #fff',
+      buttonBorderRadius: '50%',
       buttonIconColor: 'white',
       buttonFocusColor: '#00e7ffad',
       buttonIconSize: '1.5rem',
@@ -437,6 +447,10 @@ class Gifa11y {
         }
         window.a11ygifs.push($el);
       });
+    };
+
+    this.setAll = (newState) => {
+      toggleAll(newState);
     };
 
     this.initialize = () => {

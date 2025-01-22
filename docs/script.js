@@ -10,6 +10,7 @@ window.gifa11y = new Gifa11y({
   // buttonIconColor: 'white',
   // buttonFocusColor: '#00e7ffad',
   // buttonIconSize: '1.5rem',
+  // buttonBorderRadius: '50%',
   // buttonIconFontSize: '1rem',
   // buttonPlayIconID: 'playsvg',
   // buttonPauseIconID: 'pausesvg',
