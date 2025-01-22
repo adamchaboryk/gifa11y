@@ -1,12 +1,22 @@
-export default function toggleAll() {
+export default function toggleAll(newState = 'detect') {
   const option = window.gifa11yOption;
 
   const everythingButton = document.getElementById('gifa11y-all');
   const html = document.querySelector('html');
 
-  const state = html.getAttribute('data-gifa11y-all') === 'paused'
-    ? 'playing' : 'paused';
-  html.setAttribute('data-gifa11y-all', state);
+  if (newState === 'detect') {
+    newState = html.getAttribute('data-gifa11y-all') === 'paused'
+      ? 'playing' : 'paused';
+  }
+  const gifA11ySet = new CustomEvent('gifA11ySet', {
+    detail: {
+      newState: newState,
+      target: 'all',
+    },
+  });
+  window.dispatchEvent(gifA11ySet);
+
+  html.setAttribute('data-gifa11y-all', newState);
 
   let playDisplay;
   let pauseDisplay;

@@ -1,5 +1,9 @@
 import Gifa11y from './assets/js/gifa11y.esm.js';
 
+window.addEventListener('gifA11ySet', (e)=> {
+  console.log(e.detail)
+})
+
 window.gifa11y = new Gifa11y({
   // buttonBackground: 'indigo',
   // buttonBackgroundHover: 'rebeccapurple',

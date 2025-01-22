@@ -154,6 +154,14 @@ export function generateButtons(gif, option) {
     const state = getState === 'paused' ? 'playing' : 'paused';
     pauseButton.setAttribute('data-gifa11y-state', state);
 
+    const gifA11ySet = new CustomEvent('gifA11ySet', {
+      detail: {
+        newState: state,
+        button: pauseButton
+      }
+    });
+    window.dispatchEvent(gifA11ySet);
+
     const play = pauseButton.querySelector('.play');
     const pause = pauseButton.querySelector('.pause');
 
@@ -170,5 +178,5 @@ export function generateButtons(gif, option) {
       pause.style.display = 'block';
       pauseButton.setAttribute('aria-label', `${option.langPause} ${alt}`);
     }
-  }, false, option);
+  }, false);
 }
