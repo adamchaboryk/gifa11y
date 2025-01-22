@@ -150,6 +150,25 @@ A button to toggle *all* GIFs. Add ````<button id="gifa11y-all"></button>```` wi
 - The "toggle all animations" button has no CSS styling. BYO-CSS (Bring your own CSS).
 - Button becomes clickable only after GIFs have fully loaded. Uses `disabled` attribute while page is loading.
 
+### Synchronize states
+- The `buttonPauseShared` attribute makes all buttons act like the "Toggle all" button.
+- Toggles dispatch events when clicked, allowing GifA11y to sync its state with other libraries. E.g.:
+```javascript
+  // Listen for GifA11y toggle events:
+  window.addEventListener('gifA11ySet', (e)=> {
+    newState = e.detail.newState === 'paused';
+    toggleMyOtherAnimations(newState);
+  });
+
+  // Programmatically play/pause GifA11y:
+  window.gifa11y.setAll(myOtherAnimationsPlaying ? 'playing' : 'paused');
+```
+### Find new Gifs
+If you add new images to the page, tell GifA11y to check again:
+```javascript
+window.gifa11y.findNew();
+```
+
 ## Development
 NPM: `npm i gifa11y`
 

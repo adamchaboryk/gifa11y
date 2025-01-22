@@ -308,15 +308,9 @@
     // Add functionality.
     pauseButton.addEventListener('click', (e) => {
       e.preventDefault();
-      if (option.buttonPauseShared) {
-        toggleAll();
-        return;
-      }
 
       const getState = pauseButton.getAttribute('data-gifa11y-state');
       const state = getState === 'paused' ? 'playing' : 'paused';
-      pauseButton.setAttribute('data-gifa11y-state', state);
-
       const gifA11ySet = new CustomEvent('gifA11ySet', {
         detail: {
           newState: state,
@@ -324,6 +318,13 @@
         }
       });
       window.dispatchEvent(gifA11ySet);
+
+      if (option.buttonPauseShared) {
+        toggleAll(state);
+        return;
+      }
+
+      pauseButton.setAttribute('data-gifa11y-state', state);
 
       const play = pauseButton.querySelector('.play');
       const pause = pauseButton.querySelector('.pause');
