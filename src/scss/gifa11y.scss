@@ -35,13 +35,9 @@ button {
     inset: -8.5px;
   }
 
-  &:focus {
+  &:focus-visible {
     outline: 3px solid transparent;
   }
-}
-
-.v1 {
-  border-radius: 50%;
 }
 
 .v2 {

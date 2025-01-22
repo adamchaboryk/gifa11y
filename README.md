@@ -93,29 +93,31 @@ eleventyConfig.addTransform("gifa11y", async function (content) {
 
 ## Props
 ### Colours, exclusions, and other features
-|Property|Default|Description|
-|---|---|---|
-|`buttonBackground`|'indigo'|*String:* Any hexcode, rgb value, CSS colour keyword.|
-|`buttonBackgroundHover`|'rebeccapurple'|*String:* Any hexcode, rgb value, CSS colour keyword.|
-|`buttonBorder`|'2px solid #fff'|*String:* Specify the style, width, and color of an element's border.|
-|`buttonIconColor`|'white'|*String:* Any hexcode, rgb value, CSS colour keyword.|
-|`buttonFocusColor`|'#00e7ffad'|*String:* Any hexcode, rgb value, CSS colour keyword.|
-|`buttonIconSize`|'1.5rem'|*String:* Adjust height and width of SVG.|
-|`buttonIconFontSize`|'1rem'|*String:* Adjust `font-size` of an icon font (if passing an icon font via prop). E.g. `<i class="fas fa-play"></i>`|
-|`buttonPlayIconID`|*' '*|*String:* Supply your own play icon with an existing element on the page via it's unique `id`. |
-|`buttonPauseIconID`|*' '*|*String:* Supply your own pause icon with an existing element on the page via it's unique `id`|
-|`buttonPlayIconHTML`|*' '*|*String:* Supply your own play icon using an icon font or SVG. e.g. `<i class="fas fa-play"></i>`|
-|`buttonPauseIconHTML`|*' '*,|*String:* Supply your own pause icon using an icon font or SVG. e.g. `<i class="fas fa-pause"></i>`|
-|`container`|'body'|*String:* Add a pause button to GIFs within a specific area only. E.g. pass `main` for main content area.|
-|`exclusions`|*' '*|*String:* Ignore specific GIFs or regions. Use commas to separate. E.g. `.jumbotron`|
-|`gifa11yOff`|*'.gifa11y-off'*|*String:* Don't run Gifa11y if page contains class/selector. For example, turn off in development environments. E.g. `.authorMode`|
-|`inheritClasses`|'true'|*Boolean:* If canvas element should inherit the same classes as the GIF.|
-|`initiallyPaused`|'false'|*Boolean:* If you want *all* GIFs to be paused at first.|
-|`missingAltWarning`|'true'|*Boolean:* warn content author if they are missing an alt attribute on GIF. Appended to GIF.|
-|`showButtons`|`true`|*Boolean*: Show or hide Play/Pause buttons.|
-|`showGifText`|`false`|*Boolean:* Show or hide GIF text within buttons.|
-|`target`|''|*String*: Using CSS selectors, target other images like `.webp` (that don't end with `.gif`), for example `target: 'img[src$=".webp"]'`|
-|`useDevicePixelRatio`|`false`|*Boolean:* Use [window.devicePixelRatio](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio) property to help with [scaling for high resolution displays.](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays)|
+| Property                | Default          | Description                                                                                                                                                                                                                                                                                                   |
+|-------------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `buttonBackground`      | 'indigo'         | *String:* Any hexcode, rgb value, CSS colour keyword.                                                                                                                                                                                                                                                         |
+| `buttonBackgroundHover` | 'rebeccapurple'  | *String:* Any hexcode, rgb value, CSS colour keyword.                                                                                                                                                                                                                                                         |
+| `buttonBorder`          | '2px solid #fff' | *String:* Specify the style, width, and color of an element's border.                                                                                                                                                                                                                                         |
+| `buttonBorderRadius`    | '50%'            | *String:* Switch between round and square buttons.                                                                                                                                                                                                                                                            |
+| `buttonIconColor`       | 'white'          | *String:* Any hexcode, rgb value, CSS colour keyword.                                                                                                                                                                                                                                                         |
+| `buttonFocusColor`      | '#00e7ffad'      | *String:* Any hexcode, rgb value, CSS colour keyword.                                                                                                                                                                                                                                                         |
+| `buttonIconSize`        | '1.5rem'         | *String:* Adjust height and width of SVG.                                                                                                                                                                                                                                                                     |
+| `buttonIconFontSize`    | '1rem'           | *String:* Adjust `font-size` of an icon font (if passing an icon font via prop). E.g. `<i class="fas fa-play"></i>`                                                                                                                                                                                           |
+| `buttonPlayIconID`      | *' '*            | *String:* Supply your own play icon with an existing element on the page via it's unique `id`.                                                                                                                                                                                                                |
+| `buttonPauseIconID`     | *' '*            | *String:* Supply your own pause icon with an existing element on the page via it's unique `id`                                                                                                                                                                                                                |
+| `buttonPlayIconHTML`    | *' '*            | *String:* Supply your own play icon using an icon font or SVG. e.g. `<i class="fas fa-play"></i>`                                                                                                                                                                                                             |
+| `buttonPauseIconHTML`   | *' '*,           | *String:* Supply your own pause icon using an icon font or SVG. e.g. `<i class="fas fa-pause"></i>`                                                                                                                                                                                                           |
+| `buttonPauseShared`     | `false`          | *Boolean:* Pausing any GIF pauses all GIFs.                                                                                                                                                                                                                                                                   |
+| `container`             | 'body'           | *String:* Add a pause button to GIFs within a specific area only. E.g. pass `main` for main content area.                                                                                                                                                                                                     |
+| `exclusions`            | *' '*            | *String:* Ignore specific GIFs or regions. Use commas to separate. E.g. `.jumbotron`                                                                                                                                                                                                                          |
+| `gifa11yOff`            | *'.gifa11y-off'* | *String:* Don't run Gifa11y if page contains class/selector. For example, turn off in development environments. E.g. `.authorMode`                                                                                                                                                                            |
+| `inheritClasses`        | 'true'           | *Boolean:* If canvas element should inherit the same classes as the GIF.                                                                                                                                                                                                                                      |
+| `initiallyPaused`       | 'false'          | *Boolean:* If you want *all* GIFs to be paused at first.                                                                                                                                                                                                                                                      |
+| `missingAltWarning`     | 'true'           | *Boolean:* warn content author if they are missing an alt attribute on GIF. Appended to GIF.                                                                                                                                                                                                                  |
+| `showButtons`           | `true`           | *Boolean*: Show or hide Play/Pause buttons.                                                                                                                                                                                                                                                                   |
+| `showGifText`           | `false`          | *Boolean:* Show or hide GIF text within buttons.                                                                                                                                                                                                                                                              |
+| `target`                | ''               | *String*: Using CSS selectors, target other images like `.webp` (that don't end with `.gif`), for example `target: 'img[src$=".webp"]'`                                                                                                                                                                       |
+| `useDevicePixelRatio`   | `false`          | *Boolean:* Use [window.devicePixelRatio](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio) property to help with [scaling for high resolution displays.](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays) |
 
 ### Language / i18n
 |Property|Default|Description|
@@ -147,6 +149,25 @@ A button to toggle *all* GIFs. Add ````<button id="gifa11y-all"></button>```` wi
 #### Please note:
 - The "toggle all animations" button has no CSS styling. BYO-CSS (Bring your own CSS).
 - Button becomes clickable only after GIFs have fully loaded. Uses `disabled` attribute while page is loading.
+
+### Synchronize states
+- The `buttonPauseShared` attribute makes all buttons act like the "Toggle all" button.
+- Toggles dispatch events when clicked, allowing GifA11y to sync its state with other libraries. E.g.:
+```javascript
+  // Listen for GifA11y toggle events:
+  window.addEventListener('gifA11ySet', (e)=> {
+    newState = e.detail.newState === 'paused';
+    toggleMyOtherAnimations(newState);
+  });
+
+  // Programmatically play/pause GifA11y:
+  window.gifa11y.setAll(myOtherAnimationsPlaying ? 'playing' : 'paused');
+```
+### Find new Gifs
+If you add new images to the page, tell GifA11y to check again:
+```javascript
+window.gifa11y.findNew();
+```
 
 ## Development
 NPM: `npm i gifa11y`

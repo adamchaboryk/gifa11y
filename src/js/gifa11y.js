@@ -1,7 +1,8 @@
 import findGifs from './logic/findGifs.js';
 import generateStill from './logic/generateStill.js';
 import { Gifa11yButton, generateButtons } from './logic/generateButtons.js';
-import toggleEverything from './logic/toggleEverything.js';
+import everythingToggle from './logic/everythingToggle.js';
+import toggleAll from "./logic/toggleAll";
 
 export default class Gifa11y {
   constructor(options) {
@@ -9,6 +10,7 @@ export default class Gifa11y {
       buttonBackground: '#072c7c',
       buttonBackgroundHover: '#0a2051',
       buttonBorder: '2px solid #fff',
+      buttonBorderRadius: '50%',
       buttonIconColor: 'white',
       buttonFocusColor: '#00e7ffad',
       buttonIconSize: '1.5rem',
@@ -17,6 +19,7 @@ export default class Gifa11y {
       buttonPauseIconID: '',
       buttonPlayIconHTML: '',
       buttonPauseIconHTML: '',
+      buttonPauseShared: false,
       container: 'body',
       exclusions: '',
       gifa11yOff: '',
@@ -37,7 +40,37 @@ export default class Gifa11y {
     const option = { ...defaultConfig, ...options };
     window.gifa11yOption = option;
 
-    const $gifs = [];
+    window.a11ygifs = [];
+
+    this.findNew = function() {
+
+      const $newGifs = [];
+      // Find and cache GIFs
+      findGifs($newGifs, option);
+
+      // Iterate through all GIFs after they finish loading.
+      $newGifs.forEach(($el) => {
+        // Generate stills & play/pause buttons.
+        const doMagic = () => {
+          generateStill($el, option);
+          if (option.showButtons === true) {
+            generateButtons($el, option);
+          }
+        };
+
+        // Timing is important.
+        if ($el.complete) {
+          doMagic();
+        } else {
+          $el.addEventListener('load', doMagic);
+        }
+        window.a11ygifs.push($el);
+      });
+    }
+
+    this.setAll = (newState) => {
+      toggleAll(newState);
+    }
 
     this.initialize = () => {
       // Do not run Gifa11y if any supplied elements detected on page.
@@ -50,29 +83,9 @@ export default class Gifa11y {
         customElements.define('gifa11y-button', Gifa11yButton);
 
         document.addEventListener('DOMContentLoaded', () => {
-          // Find and cache GIFs
-          findGifs($gifs, option);
-
-          // Iterate through all GIFs after they finish loading.
-          $gifs.forEach(($el) => {
-            // Generate stills & play/pause buttons.
-            const doMagic = () => {
-              generateStill($el, option);
-              if (option.showButtons === true) {
-                generateButtons($el, option);
-              }
-            };
-
-            // Timing is important.
-            if ($el.complete) {
-              doMagic();
-            } else {
-              $el.addEventListener('load', doMagic);
-            }
-          });
-
+          this.findNew();
           // Initialize toggle everything button.
-          toggleEverything($gifs, option);
+          everythingToggle(option);
         }, false);
       }
     };
