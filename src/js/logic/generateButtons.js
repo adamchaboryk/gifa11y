@@ -1,4 +1,5 @@
 import generalStyles from '../../../dist/css/gifa11y.min.css';
+import toggleAll from "./toggleAll";
 
 // Create web component container.
 export class Gifa11yButton extends HTMLElement {
@@ -143,6 +144,12 @@ export function generateButtons(gif, option) {
 
   // Add functionality.
   pauseButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (option.buttonPauseShared) {
+      toggleAll();
+      return;
+    }
+
     const getState = pauseButton.getAttribute('data-gifa11y-state');
     const state = getState === 'paused' ? 'playing' : 'paused';
     pauseButton.setAttribute('data-gifa11y-state', state);
@@ -163,6 +170,5 @@ export function generateButtons(gif, option) {
       pause.style.display = 'block';
       pauseButton.setAttribute('aria-label', `${option.langPause} ${alt}`);
     }
-    e.preventDefault();
-  }, false);
+  }, false, option);
 }

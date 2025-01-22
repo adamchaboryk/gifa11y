@@ -288,9 +288,12 @@
           const targetSize = document.querySelector('img[src="https://media.giphy.com/media/iicDrNGWxHmDrIni6j/giphy.gif"]');
           targetSize.addEventListener('load', function () {
             setTimeout(() => {
+              if (!(targetSize && targetSize.previousElementSibling)) {
+                return false;
+              }
               const button2 = targetSize.previousElementSibling;
               button2.classList.add('target-size');
-            }, 200);
+            }, 5000);
           });
         </script>
         <div class="col-lg-4 mb-3 d-flex align-items-stretch">
@@ -403,6 +406,9 @@
           const image = document.querySelector('img[src="https://media.giphy.com/media/f3eMrZZnicqMJxbQcQ/giphy.gif"]');
           image.addEventListener('load', function () {
             setTimeout(() => {
+              if (!(image && image.previousElementSibling)) {
+                return false;
+              }
               const button = image.previousElementSibling.shadowRoot.querySelector('button');
               button.classList.remove('v1');
               button.classList.add('v2');

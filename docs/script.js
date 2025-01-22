@@ -1,6 +1,6 @@
 import Gifa11y from './assets/js/gifa11y.esm.js';
 
-const gifa11y = new Gifa11y({
+window.gifa11y = new Gifa11y({
   // buttonBackground: 'indigo',
   // buttonBackgroundHover: 'rebeccapurple',
   // buttonIconColor: 'white',
@@ -11,6 +11,7 @@ const gifa11y = new Gifa11y({
   // buttonPauseIconID: 'pausesvg',
   // buttonPlayIconHTML: '',
   // buttonPauseIconHTML: '',
+  // buttonPauseShared: true,
   container: 'main',
   // exclusions: '',
   // gifa11yOff: '',
