@@ -18,7 +18,7 @@ Easily add pause buttons to your gifs. This script is intended for shorter gifs 
 - Customizable
   - Customize colours and icons via props.
   - Leverages web components to avoid style conflicts.
-- Size: 8 KB
+- Size: ~9.5 KB
 
 ▶️ [View Gifa11y demo](https://adamchaboryk.github.io/gifa11y/)
 
@@ -127,7 +127,7 @@ eleventyConfig.addTransform("gifa11y", async function (content) {
 |`langPauseAllButton`|`Pause all animations`|**String:** toggle all button.|
 |`langPlayAllButton`|`Play all animations`|**String:** toggle all button.|
 |`langMissingAlt`|`Missing image description.`|**String:** If alt is missing on gif, this string populates the aria-label for the corresponding pause button.|
-|`langAltWarning`|`&#9888; Please add alternative text to GIF.`|**String:** If gif is missing alt text.|
+|`langAltWarning`|`Error! Please add alt text to gif.`|**String:** If gif is missing alt text.|
 
 ## Optional features
 
