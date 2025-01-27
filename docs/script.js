@@ -1,6 +1,6 @@
 import Gifa11y from './assets/js/gifa11y.esm.js';
 
-window.addEventListener('gifA11ySet', (e)=> {
+window.addEventListener('gifa11yState', (e) => {
   console.log(e.detail)
 })
 
@@ -32,4 +32,5 @@ window.gifa11y = new Gifa11y({
   // showButtons: true,
   // showGifText: false,
   target: 'img[src$=".webp"]',
+  // sharedPauseButton: true,
 });

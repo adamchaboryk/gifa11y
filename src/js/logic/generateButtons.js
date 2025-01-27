@@ -1,5 +1,5 @@
 import generalStyles from '../../../dist/css/gifa11y.min.css';
-import toggleAll from "./toggleAll";
+import toggleAll from './toggleAll';
 
 // Create web component container.
 export class Gifa11yButton extends HTMLElement {
@@ -109,11 +109,7 @@ export function generateButtons(gif, option) {
   playIcon.style.display = playDisplay;
 
   // Preferred style.
-  if (option.showGifText === false) {
-    pauseButton.classList.add('v1');
-  } else {
-    pauseButton.classList.add('v2');
-  }
+  pauseButton.classList.add(option.showGifText ? 'v2' : 'v1');
 
   /* Pause icon. */
   if (option.buttonPauseIconID.length) {
@@ -153,15 +149,16 @@ export function generateButtons(gif, option) {
 
     const getState = pauseButton.getAttribute('data-gifa11y-state');
     const state = getState === 'paused' ? 'playing' : 'paused';
-    const gifA11ySet = new CustomEvent('gifA11ySet', {
+    const gifa11yState = new CustomEvent('gifa11yState', {
       detail: {
         newState: state,
-        button: pauseButton
-      }
+        button: pauseButton,
+      },
     });
-    window.dispatchEvent(gifA11ySet);
+    window.dispatchEvent(gifa11yState);
 
-    if (option.buttonPauseShared) {
+    // If all buttons share the same pause state.
+    if (option.sharedPauseButton) {
       toggleAll(state);
       return;
     }

@@ -1,23 +1,26 @@
 export default function toggleAll(newState = 'detect') {
+  let state = newState;
   const option = window.gifa11yOption;
-
   const everythingButton = document.getElementById('gifa11y-all');
   const html = document.querySelector('html');
 
-  if (newState === 'detect') {
-    newState = html.getAttribute('data-gifa11y-all') === 'paused'
+  // Detect current page state and dispatch event.
+  if (state === 'detect') {
+    state = html.getAttribute('data-gifa11y-all') === 'paused'
       ? 'playing' : 'paused';
-    const gifA11ySet = new CustomEvent('gifA11ySet', {
+    const gifa11yState = new CustomEvent('gifa11yState', {
       detail: {
-        newState: newState,
+        newState: state,
         target: 'all',
       },
     });
-    window.dispatchEvent(gifA11ySet);
+    window.dispatchEvent(gifa11yState);
   }
 
-  html.setAttribute('data-gifa11y-all', newState);
+  // Set the page state.
+  html.setAttribute('data-gifa11y-all', state);
 
+  // Change properties based on page state.
   let playDisplay;
   let pauseDisplay;
   let currentState;
@@ -43,17 +46,20 @@ export default function toggleAll(newState = 'detect') {
     window.gifa11yOption.initiallyPaused = false;
   }
 
+  // Toggle display of all <img src="*.gif"> on the page.
   window.a11ygifs.forEach(($el) => {
     const gif = $el;
     gif.style.display = pauseDisplay;
   });
 
+  // Toggle display of all <canvas> elements on the page.
   const allCanvas = document.querySelectorAll('[data-gifa11y-canvas]');
   allCanvas.forEach(($el) => {
     const canvas = $el;
     canvas.style.display = playDisplay;
   });
 
+  // Toggle state of all play/pause buttons on the page.
   const allButtons = document.querySelectorAll('gifa11y-button');
   allButtons.forEach(($el) => {
     const shadow = $el.shadowRoot.querySelector('button');

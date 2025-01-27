@@ -1,4 +1,4 @@
-/*! Gifa11y 2.0.4 | @author Adam Chaboryk © 2021 - 2025 | @license MIT | @contact adam@chaboryk.xyz | https://github.com/adamchaboryk/gifa11y */
+/*! Gifa11y 2.1.0 | @author Adam Chaboryk © 2021 - 2025 | @license MIT | @contact adam@chaboryk.xyz | https://github.com/adamchaboryk/gifa11y */
 function findGifs($newGifs, option) {
   // Find GIFs within specified container, fallback to 'body'.
   const root = document.querySelector(option.container);
@@ -85,25 +85,28 @@ function generateStill(gif, option) {
 var generalStyles = ":host{--gifa11y-font:system-ui,\"Segoe UI\",roboto,helvetica,arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\"}*,:after,:before{box-sizing:border-box}button{align-items:center;box-shadow:0 0 16px 0 rgba(0,0,0,.31);cursor:pointer;display:flex;justify-content:center;line-height:normal;margin:12px;min-height:36px;min-width:36px;padding:4px;position:absolute;text-align:center;transition:all .2s ease-in-out;z-index:500}button:before{content:\"\";inset:-8.5px;min-height:50px;min-width:50px;position:absolute}button:focus-visible{outline:3px solid transparent}.v2{align-items:center;border-radius:5px;display:flex;flex-wrap:wrap;place-content:center center;text-align:center}.v2:after{content:\"GIF\";display:inline-block;font-family:var(--gifa11y-font);font-weight:600;line-height:0;padding-left:3px;padding-right:3px}i{padding:4px}i,svg{vertical-align:middle}svg{display:block;flex-shrink:0;position:relative}";
 
 function toggleAll(newState = 'detect') {
+  let state = newState;
   const option = window.gifa11yOption;
-
   const everythingButton = document.getElementById('gifa11y-all');
   const html = document.querySelector('html');
 
-  if (newState === 'detect') {
-    newState = html.getAttribute('data-gifa11y-all') === 'paused'
+  // Detect current page state and dispatch event.
+  if (state === 'detect') {
+    state = html.getAttribute('data-gifa11y-all') === 'paused'
       ? 'playing' : 'paused';
-    const gifA11ySet = new CustomEvent('gifA11ySet', {
+    const gifa11yState = new CustomEvent('gifa11yState', {
       detail: {
-        newState: newState,
+        newState: state,
         target: 'all',
       },
     });
-    window.dispatchEvent(gifA11ySet);
+    window.dispatchEvent(gifa11yState);
   }
 
-  html.setAttribute('data-gifa11y-all', newState);
+  // Set the page state.
+  html.setAttribute('data-gifa11y-all', state);
 
+  // Change properties based on page state.
   let playDisplay;
   let pauseDisplay;
   let currentState;
@@ -129,17 +132,20 @@ function toggleAll(newState = 'detect') {
     window.gifa11yOption.initiallyPaused = false;
   }
 
+  // Toggle display of all <img src="*.gif"> on the page.
   window.a11ygifs.forEach(($el) => {
     const gif = $el;
     gif.style.display = pauseDisplay;
   });
 
+  // Toggle display of all <canvas> elements on the page.
   const allCanvas = document.querySelectorAll('[data-gifa11y-canvas]');
   allCanvas.forEach(($el) => {
     const canvas = $el;
     canvas.style.display = playDisplay;
   });
 
+  // Toggle state of all play/pause buttons on the page.
   const allButtons = document.querySelectorAll('gifa11y-button');
   allButtons.forEach(($el) => {
     const shadow = $el.shadowRoot.querySelector('button');
@@ -261,11 +267,7 @@ function generateButtons(gif, option) {
   playIcon.style.display = playDisplay;
 
   // Preferred style.
-  if (option.showGifText === false) {
-    pauseButton.classList.add('v1');
-  } else {
-    pauseButton.classList.add('v2');
-  }
+  pauseButton.classList.add(option.showGifText ? 'v2' : 'v1');
 
   /* Pause icon. */
   if (option.buttonPauseIconID.length) {
@@ -305,15 +307,16 @@ function generateButtons(gif, option) {
 
     const getState = pauseButton.getAttribute('data-gifa11y-state');
     const state = getState === 'paused' ? 'playing' : 'paused';
-    const gifA11ySet = new CustomEvent('gifA11ySet', {
+    const gifa11yState = new CustomEvent('gifa11yState', {
       detail: {
         newState: state,
-        button: pauseButton
-      }
+        button: pauseButton,
+      },
     });
-    window.dispatchEvent(gifA11ySet);
+    window.dispatchEvent(gifa11yState);
 
-    if (option.buttonPauseShared) {
+    // If all buttons share the same pause state.
+    if (option.sharedPauseButton) {
       toggleAll(state);
       return;
     }
@@ -358,8 +361,8 @@ function everythingToggle() {
 
     // Disable button initially to prevent people from clicking it too soon. Otherwise canvas won't generate.
     everythingButton.setAttribute('disabled', 'true');
-    const $notReady = window.a11ygifs.filter((image) => !image.complete);
-    if ($notReady.length > 0) {
+    const notReady = window.a11ygifs.filter((image) => !image.complete);
+    if (notReady.length > 0) {
       const promises = window.a11ygifs.filter((image) => !image.complete)
         .map((image) => new Promise((resolve) => {
           const resolveImage = image;
@@ -367,22 +370,30 @@ function everythingToggle() {
           resolveImage.onerror = resolve;
         }));
       Promise.all(promises).then(() => {
-        everythingButton.addEventListener('click', () => {
-          toggleAll();
-        });
-        // Remove 'disabled' attribute once all images have fully loaded.
-        everythingButton.removeAttribute('disabled');
+        if (everythingButton) {
+          // Add click handler to toggle all buttons.
+          everythingButton.addEventListener('click', () => {
+            toggleAll();
+          });
+
+          // Remove 'disabled' attribute once all images have fully loaded.
+          everythingButton.removeAttribute('disabled');
+        }
       });
     }
+
+    // If promises fail, we'll wait 5 seconds before resetting the toggle all button.
     window.setTimeout(() => {
-      // If promises fail.
-      everythingButton.addEventListener('click', () => {
-        toggleAll();
-      });
-      // Remove 'disabled' attribute once all images have fully loaded.
+      // Prevent bubbling.
+      everythingButton.removeEventListener('click', toggleAll);
+
+      // Ensure current page state is passed to toggle all button.
+      const state = html.getAttribute('data-gifa11y-all') === 'paused' ? 'paused' : 'playing';
+      everythingButton.addEventListener('click', toggleAll(state), { once: true });
+
+      // Ensure 'disabled' attribute is removed.
       everythingButton.removeAttribute('disabled');
     }, 5000);
-
   }
 }
 
@@ -401,7 +412,6 @@ class Gifa11y {
       buttonPauseIconID: '',
       buttonPlayIconHTML: '',
       buttonPauseIconHTML: '',
-      buttonPauseShared: false,
       container: 'body',
       exclusions: '',
       gifa11yOff: '',
@@ -414,6 +424,7 @@ class Gifa11y {
       langMissingAlt: 'Missing image description.',
       langAltWarning: 'Error! Please add alt text to GIF.',
       missingAltWarning: true,
+      sharedPauseButton: false,
       showButtons: true,
       showGifText: false,
       target: '',
@@ -422,15 +433,16 @@ class Gifa11y {
     const option = { ...defaultConfig, ...options };
     window.gifa11yOption = option;
 
+    // List of all gifs on the page.
     window.a11ygifs = [];
 
-    this.findNew = function() {
-
+    // Query page for new gifs.
+    this.findNew = () => {
       const $newGifs = [];
-      // Find and cache GIFs
+      // Find and cache gifs.
       findGifs($newGifs, option);
 
-      // Iterate through all GIFs after they finish loading.
+      // Iterate through all gifs after they finish loading.
       $newGifs.forEach(($el) => {
         // Generate stills & play/pause buttons.
         const doMagic = () => {
@@ -450,6 +462,7 @@ class Gifa11y {
       });
     };
 
+    // Method to programmatically play/pause Gifa11y.
     this.setAll = (newState) => {
       toggleAll(newState);
     };
@@ -460,12 +473,15 @@ class Gifa11y {
         const { gifa11yOff } = option;
         return gifa11yOff.trim().length > 0 ? document.querySelector(gifa11yOff) : false;
       };
+
       if (!checkRunPrevent()) {
         // Register web component.
         customElements.define('gifa11y-button', Gifa11yButton);
 
+        // Run Gifa11y on page load.
         document.addEventListener('DOMContentLoaded', () => {
           this.findNew();
+
           // Initialize toggle everything button.
           everythingToggle();
         }, false);

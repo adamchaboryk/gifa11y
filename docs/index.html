@@ -249,6 +249,15 @@
         </div>
         <div class="col-lg-4 mb-3 d-flex align-items-stretch">
           <div class="card">
+            <div id="load-later"></div>
+            <div class="card-body">
+              <h3 class="card-title h5">Gif is loading...</h3>
+              <p>Gifa11y can dynamically add play/pause buttons as new gifs are added to the page.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 mb-3 d-flex align-items-stretch">
+          <div class="card">
             <img loading="lazy" src="https://media.giphy.com/media/XIqCQx02E1U9W/giphy.gif"
               alt="Kermit fiercely typing away on a typewriter." class="card-img-top gifa11y-paused" />
             <div class="card-body">
@@ -449,6 +458,24 @@
       </div>
     </footer>
   </div>
+  <script>
+    setTimeout(() => {
+      // Create the image element
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.src = 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExenF0dzgzMmttMWdueW9vcXdsendnaDZjaWVlaTVpMmt4MXkyZW8zdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o72F8t9TDi2xVnxOE/giphy.gif';
+      img.className = 'card-img-top';
+      img.alt = 'Surprised monkey!';
+
+      // Inject the image into the body (or any other container)
+      const late = document.getElementById('load-later');
+      late.appendChild(img);
+      setTimeout(() => {
+        window.gifa11y.findNew();
+      }, 100);
+    }, 3000);
+  </script>
+
   <script>const year = document.getElementById("year");
     year.innerHTML = new Date().getFullYear();</script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
