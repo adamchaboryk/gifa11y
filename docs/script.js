@@ -1,16 +1,22 @@
 import Gifa11y from './assets/js/gifa11y.esm.js';
 
-const gifa11y = new Gifa11y({
+window.addEventListener('gifa11yState', (e) => {
+  console.log(e.detail)
+})
+
+window.gifa11y = new Gifa11y({
   // buttonBackground: 'indigo',
   // buttonBackgroundHover: 'rebeccapurple',
   // buttonIconColor: 'white',
   // buttonFocusColor: '#00e7ffad',
   // buttonIconSize: '1.5rem',
+  // buttonBorderRadius: '50%',
   // buttonIconFontSize: '1rem',
   // buttonPlayIconID: 'playsvg',
   // buttonPauseIconID: 'pausesvg',
   // buttonPlayIconHTML: '',
   // buttonPauseIconHTML: '',
+  // buttonPauseShared: true,
   container: 'main',
   // exclusions: '',
   // gifa11yOff: '',
@@ -26,4 +32,5 @@ const gifa11y = new Gifa11y({
   // showButtons: true,
   // showGifText: false,
   target: 'img[src$=".webp"]',
+  // sharedPauseButton: true,
 });

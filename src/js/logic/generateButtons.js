@@ -1,4 +1,5 @@
 import generalStyles from '../../../dist/css/gifa11y.min.css';
+import toggleAll from './toggleAll';
 
 // Create web component container.
 export class Gifa11yButton extends HTMLElement {
@@ -19,11 +20,14 @@ export class Gifa11yButton extends HTMLElement {
         border: ${this.option.buttonBorder};
         color: ${this.option.buttonIconColor};
       }
-      button:hover, button:focus {
+      button:hover, button:focus-visible {
         background: ${this.option.buttonBackgroundHover};
       }
-      button:focus {
+      button:focus-visible {
         box-shadow: 0 0 0 5px ${this.option.buttonFocusColor};
+      }
+      .v1 {
+        border-radius: ${this.option.buttonBorderRadius};
       }
       i {
         font-size: ${this.option.buttonIconFontSize};
@@ -97,17 +101,15 @@ export function generateButtons(gif, option) {
   pauseButton.setAttribute('data-gifa11y-state', currentState);
   pauseButton.setAttribute('data-gifa11y-alt', alt);
   pauseButton.innerHTML = `
-  <div class="pause" aria-hidden="true" style="display:${pauseDisplay}"></div>
+  <div class="pause" aria-hidden="true"></div>
   <div class="play" aria-hidden="true" style="display:${playDisplay}"></div>`;
   const pauseIcon = pauseButton.querySelector('.pause');
+  pauseIcon.style.display = pauseDisplay;
   const playIcon = pauseButton.querySelector('.play');
+  playIcon.style.display = playDisplay;
 
   // Preferred style.
-  if (option.showGifText === false) {
-    pauseButton.classList.add('v1');
-  } else {
-    pauseButton.classList.add('v2');
-  }
+  pauseButton.classList.add(option.showGifText ? 'v2' : 'v1');
 
   /* Pause icon. */
   if (option.buttonPauseIconID.length) {
@@ -143,8 +145,24 @@ export function generateButtons(gif, option) {
 
   // Add functionality.
   pauseButton.addEventListener('click', (e) => {
+    e.preventDefault();
+
     const getState = pauseButton.getAttribute('data-gifa11y-state');
     const state = getState === 'paused' ? 'playing' : 'paused';
+    const gifa11yState = new CustomEvent('gifa11yState', {
+      detail: {
+        newState: state,
+        button: pauseButton,
+      },
+    });
+    window.dispatchEvent(gifa11yState);
+
+    // If all buttons share the same pause state.
+    if (option.sharedPauseButton) {
+      toggleAll(state);
+      return;
+    }
+
     pauseButton.setAttribute('data-gifa11y-state', state);
 
     const play = pauseButton.querySelector('.play');
@@ -163,6 +181,5 @@ export function generateButtons(gif, option) {
       pause.style.display = 'block';
       pauseButton.setAttribute('aria-label', `${option.langPause} ${alt}`);
     }
-    e.preventDefault();
   }, false);
 }

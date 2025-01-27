@@ -1,7 +1,8 @@
 import findGifs from './logic/findGifs.js';
 import generateStill from './logic/generateStill.js';
 import { Gifa11yButton, generateButtons } from './logic/generateButtons.js';
-import toggleEverything from './logic/toggleEverything.js';
+import everythingToggle from './logic/everythingToggle.js';
+import toggleAll from './logic/toggleAll';
 
 export default class Gifa11y {
   constructor(options) {
@@ -9,6 +10,7 @@ export default class Gifa11y {
       buttonBackground: '#072c7c',
       buttonBackgroundHover: '#0a2051',
       buttonBorder: '2px solid #fff',
+      buttonBorderRadius: '50%',
       buttonIconColor: 'white',
       buttonFocusColor: '#00e7ffad',
       buttonIconSize: '1.5rem',
@@ -22,13 +24,14 @@ export default class Gifa11y {
       gifa11yOff: '',
       inheritClasses: true,
       initiallyPaused: false,
-      langPause: 'Pause GIF:',
-      langPlay: 'Play GIF:',
-      langPauseAllButton: 'Pause all GIFs',
-      langPlayAllButton: 'Play all GIFs',
+      langPause: 'Pause animation:',
+      langPlay: 'Play animation:',
+      langPauseAllButton: 'Pause all animations',
+      langPlayAllButton: 'Play all animations',
       langMissingAlt: 'Missing image description.',
-      langAltWarning: 'Error! Please add alt text to GIF.',
+      langAltWarning: 'Error! Please add alt text to gif.',
       missingAltWarning: true,
+      sharedPauseButton: false,
       showButtons: true,
       showGifText: false,
       target: '',
@@ -37,7 +40,39 @@ export default class Gifa11y {
     const option = { ...defaultConfig, ...options };
     window.gifa11yOption = option;
 
-    const $gifs = [];
+    // List of all gifs on the page.
+    window.a11ygifs = [];
+
+    // Query page for new gifs.
+    this.findNew = () => {
+      const $newGifs = [];
+      // Find and cache gifs.
+      findGifs($newGifs, option);
+
+      // Iterate through all gifs after they finish loading.
+      $newGifs.forEach(($el) => {
+        // Generate stills & play/pause buttons.
+        const doMagic = () => {
+          generateStill($el, option);
+          if (option.showButtons === true) {
+            generateButtons($el, option);
+          }
+        };
+
+        // Timing is important.
+        if ($el.complete) {
+          doMagic();
+        } else {
+          $el.addEventListener('load', doMagic);
+        }
+        window.a11ygifs.push($el);
+      });
+    };
+
+    // Method to programmatically play/pause Gifa11y.
+    this.setAll = (newState) => {
+      toggleAll(newState);
+    };
 
     this.initialize = () => {
       // Do not run Gifa11y if any supplied elements detected on page.
@@ -45,34 +80,17 @@ export default class Gifa11y {
         const { gifa11yOff } = option;
         return gifa11yOff.trim().length > 0 ? document.querySelector(gifa11yOff) : false;
       };
+
       if (!checkRunPrevent()) {
         // Register web component.
         customElements.define('gifa11y-button', Gifa11yButton);
 
+        // Run Gifa11y on page load.
         document.addEventListener('DOMContentLoaded', () => {
-          // Find and cache GIFs
-          findGifs($gifs, option);
-
-          // Iterate through all GIFs after they finish loading.
-          $gifs.forEach(($el) => {
-            // Generate stills & play/pause buttons.
-            const doMagic = () => {
-              generateStill($el, option);
-              if (option.showButtons === true) {
-                generateButtons($el, option);
-              }
-            };
-
-            // Timing is important.
-            if ($el.complete) {
-              doMagic();
-            } else {
-              $el.addEventListener('load', doMagic);
-            }
-          });
+          this.findNew();
 
           // Initialize toggle everything button.
-          toggleEverything($gifs, option);
+          everythingToggle(option);
         }, false);
       }
     };
