@@ -4,11 +4,10 @@ export default function findGifs($newGifs, option) {
   const container = (!root) ? document.querySelector('body') : root;
 
   // Check for additional images supplied through instantiation.
-  const additionalImages = (!option.target) ? '' : `, ${option.target}`;
   const exclusions = (!option.exclusions) ? '' : `, ${option.exclusions}`;
 
   // Query DOM for images.
-  const images = Array.from(container.querySelectorAll(`:is(img[src$=".gif"]${additionalImages}):not([src*="gifa11y-ignore"], [data-gifa11y-state], .gifa11y-ignore${exclusions})`));
+  const images = Array.from(container.querySelectorAll(`:is(${option.target}):not([src*="gifa11y-ignore"], [data-gifa11y-state], .gifa11y-ignore${exclusions})`));
 
   // Update $gifs array.
   images.forEach(($gif) => {

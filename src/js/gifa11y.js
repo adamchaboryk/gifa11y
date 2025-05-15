@@ -34,7 +34,7 @@ export default class Gifa11y {
       sharedPauseButton: false,
       showButtons: true,
       showGifText: false,
-      target: '',
+      target: 'img[src$=".gif"]',
       useDevicePixelRatio: false,
     };
     const option = { ...defaultConfig, ...options };

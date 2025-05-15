@@ -116,7 +116,7 @@ eleventyConfig.addTransform("gifa11y", async function (content) {
 | `sharedPauseButton` | `false` | **Boolean:** Pausing any gif pauses all gifs. |
 | `showButtons` | `true` | **Boolean:** Show or hide Play/Pause buttons. |
 | `showGifText` | `false` | **Boolean:** Show or hide gif text within buttons. |
-| `target` | `''` | **String:** Using CSS selectors, target other images like `.webp` (that don't end with `.gif`), for example `target: 'img[src$=".webp"]'` |
+| `target` | `img[src$=".gif"]` | **String:** Using CSS selectors, target specific animated GIFs or .webp images, for example `target: 'img[src$=".gif"], img[src$=".webp"]'` |
 | `useDevicePixelRatio` | `false` | **Boolean:** Use [window.devicePixelRatio](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio) property to help with [scaling for high resolution displays.](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays) |
 
 ### Language / i18n

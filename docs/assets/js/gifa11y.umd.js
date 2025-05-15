@@ -1,4 +1,4 @@
-/*! Gifa11y 2.1.0 | @author Adam Chaboryk © 2021 - 2025 | @license MIT | @contact adam@chaboryk.xyz | https://github.com/adamchaboryk/gifa11y */
+/*! Gifa11y 2.2.0 | @author Adam Chaboryk © 2021 - 2025 | @license MIT | @contact adam@chaboryk.xyz | https://github.com/adamchaboryk/gifa11y */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
@@ -11,11 +11,10 @@
     const container = (!root) ? document.querySelector('body') : root;
 
     // Check for additional images supplied through instantiation.
-    const additionalImages = (!option.target) ? '' : `, ${option.target}`;
     const exclusions = (!option.exclusions) ? '' : `, ${option.exclusions}`;
 
     // Query DOM for images.
-    const images = Array.from(container.querySelectorAll(`:is(img[src$=".gif"]${additionalImages}):not([src*="gifa11y-ignore"], [data-gifa11y-state], .gifa11y-ignore${exclusions})`));
+    const images = Array.from(container.querySelectorAll(`:is(${option.target}):not([src*="gifa11y-ignore"], [data-gifa11y-state], .gifa11y-ignore${exclusions})`));
 
     // Update $gifs array.
     images.forEach(($gif) => {
@@ -433,7 +432,7 @@
         sharedPauseButton: false,
         showButtons: true,
         showGifText: false,
-        target: '',
+        target: 'img[src$=".gif"]',
         useDevicePixelRatio: false,
       };
       const option = { ...defaultConfig, ...options };

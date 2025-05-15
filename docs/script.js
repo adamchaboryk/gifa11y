@@ -31,6 +31,6 @@ window.gifa11y = new Gifa11y({
   // missingAltWarning: true,
   // showButtons: true,
   // showGifText: false,
-  target: 'img[src$=".webp"]',
+  target: 'img[src$=".gif"], img[src$=".webp"]', // Default: 'img[src$=".gif"]',
   // sharedPauseButton: true,
 });
