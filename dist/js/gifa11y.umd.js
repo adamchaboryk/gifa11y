@@ -1,4 +1,4 @@
-/*! Gifa11y 2.2.1 | @author Adam Chaboryk © 2021 - 2025 | @license MIT | @contact adam@chaboryk.xyz | https://github.com/adamchaboryk/gifa11y */
+/*! Gifa11y 2.2.2 | @author Adam Chaboryk © 2021 - 2025 | @license MIT | @contact adam@chaboryk.xyz | https://github.com/adamchaboryk/gifa11y */
 (function(global, factory) {
   typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, global.Gifa11y = factory());
 })(this, (function() {
@@ -267,7 +267,7 @@
   function generateStill(gif, option) {
     const image = gif;
     const canvas = document.createElement("canvas");
-    canvas.setAttribute("role", "image");
+    canvas.setAttribute("role", "img");
     canvas.setAttribute("aria-label", image.alt);
     canvas.setAttribute("data-gifa11y-canvas", "");
     canvas.hidden = false;

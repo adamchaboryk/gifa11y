@@ -1,4 +1,4 @@
-/*! Gifa11y 2.2.1 | @author Adam Chaboryk © 2021 - 2025 | @license MIT | @contact adam@chaboryk.xyz | https://github.com/adamchaboryk/gifa11y */
+/*! Gifa11y 2.2.2 | @author Adam Chaboryk © 2021 - 2025 | @license MIT | @contact adam@chaboryk.xyz | https://github.com/adamchaboryk/gifa11y */
 function toggleAll(newState = "detect") {
   let state = newState;
   const option = window.gifa11yOption;
@@ -263,7 +263,7 @@ function generateButtons(gif, option) {
 function generateStill(gif, option) {
   const image = gif;
   const canvas = document.createElement("canvas");
-  canvas.setAttribute("role", "image");
+  canvas.setAttribute("role", "img");
   canvas.setAttribute("aria-label", image.alt);
   canvas.setAttribute("data-gifa11y-canvas", "");
   canvas.hidden = false;

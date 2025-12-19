@@ -3,7 +3,7 @@ export default function generateStill(gif, option) {
 
   // Initial setup of canvas element.
   const canvas = document.createElement('canvas');
-  canvas.setAttribute('role', 'image');
+  canvas.setAttribute('role', 'img');
   canvas.setAttribute('aria-label', image.alt);
   canvas.setAttribute('data-gifa11y-canvas', '');
   canvas.hidden = false;
