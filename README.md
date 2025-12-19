@@ -28,7 +28,7 @@ Alternatively check out [Gifa11y demo on CodePen](https://codepen.io/adamchabory
 
 ### CDN (regular script/UMD):
 ```
-https://cdn.jsdelivr.net/gh/adamchaboryk/gifa11y@2.2.1/dist/js/gifa11y.umd.min.js
+https://cdn.jsdelivr.net/gh/adamchaboryk/gifa11y@2.2.2/dist/js/gifa11y.umd.min.js
 ```
 
 ### NPM
