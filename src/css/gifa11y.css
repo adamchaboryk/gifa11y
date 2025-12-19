@@ -1,5 +1,7 @@
 :host {
-  --gifa11y-font: system-ui, "Segoe UI", roboto, helvetica, arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --gifa11y-font:
+    system-ui, "Segoe UI", roboto, helvetica, arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 /* Reset */
@@ -24,9 +26,9 @@ button {
   text-align: center;
   cursor: pointer;
   box-shadow: 0 0 16px 0 #0000004f;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 
-  // Accessibility: Increase target size.
+  /* Accessibility: Increase target size. */
   &::before {
     position: absolute;
     min-width: 50px;
@@ -59,7 +61,7 @@ button {
   }
 }
 
-// Spacing for i or svg.
+/* Spacing for i or svg. */
 i {
   padding: 4px;
   vertical-align: middle;

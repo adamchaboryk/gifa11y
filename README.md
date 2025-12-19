@@ -28,7 +28,7 @@ Alternatively check out [Gifa11y demo on CodePen](https://codepen.io/adamchabory
 
 ### CDN (regular script/UMD):
 ```
-https://cdn.jsdelivr.net/gh/adamchaboryk/gifa11y@2.1.0/dist/js/gifa11y.umd.min.js
+https://cdn.jsdelivr.net/gh/adamchaboryk/gifa11y@2.2.1/dist/js/gifa11y.umd.min.js
 ```
 
 ### NPM
@@ -177,12 +177,10 @@ window.gifa11y.findNew();
 ## Development
 `npm i gifa11y`
 
-A light server for development is included. Any change inside `/src` folder files will trigger the build process for the files and will reload the page with the new changes. To use this environment:
-
 1. Clone this repo.
 2. Be sure you have node installed and up to date.
 3. Execute `npm install`
-4. In a terminal execute: `npm run start`. Then open http://localhost:8080/docs/index.html in your browser.
+4. In a terminal execute: `npm run dev`.
 
 ## Colophon
 I was looking for a simple solution to automatically add pause buttons to gifs, although I could not find anything that was 100% automatic, accessible, and considered loading time of images. I came across a few clever methods which involve swapping a `.jpg` still - although ain't nobody got time for that. This script uses the `<canvas>` method to generate a still. I learned a few things developing this:

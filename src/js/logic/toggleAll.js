@@ -6,8 +6,7 @@ export default function toggleAll(newState = 'detect') {
 
   // Detect current page state and dispatch event.
   if (state === 'detect') {
-    state = html.getAttribute('data-gifa11y-all') === 'paused'
-      ? 'playing' : 'paused';
+    state = html.getAttribute('data-gifa11y-all') === 'paused' ? 'playing' : 'paused';
     const gifa11yState = new CustomEvent('gifa11yState', {
       detail: {
         newState: state,

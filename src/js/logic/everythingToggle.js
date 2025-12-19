@@ -21,12 +21,16 @@ export default function everythingToggle() {
     everythingButton.setAttribute('disabled', 'true');
     const notReady = window.a11ygifs.filter((image) => !image.complete);
     if (notReady.length > 0) {
-      const promises = window.a11ygifs.filter((image) => !image.complete)
-        .map((image) => new Promise((resolve) => {
-          const resolveImage = image;
-          resolveImage.onload = resolve;
-          resolveImage.onerror = resolve;
-        }));
+      const promises = window.a11ygifs
+        .filter((image) => !image.complete)
+        .map(
+          (image) =>
+            new Promise((resolve) => {
+              const resolveImage = image;
+              resolveImage.onload = resolve;
+              resolveImage.onerror = resolve;
+            }),
+        );
       Promise.all(promises).then(() => {
         if (everythingButton) {
           // Add click handler to toggle all buttons.
@@ -47,7 +51,9 @@ export default function everythingToggle() {
 
       // Ensure current page state is passed to toggle all button.
       const state = html.getAttribute('data-gifa11y-all') === 'paused' ? 'paused' : 'playing';
-      everythingButton.addEventListener('click', toggleAll(state), { once: true });
+      everythingButton.addEventListener('click', toggleAll(state), {
+        once: true,
+      });
 
       // Ensure 'disabled' attribute is removed.
       everythingButton.removeAttribute('disabled');

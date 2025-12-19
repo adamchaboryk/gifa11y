@@ -2,67 +2,66 @@
   --gifa11y-font: system-ui, "Segoe UI", roboto, helvetica, arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-/* Reset */
-*,
-*::before,
-*::after {
+*, :before, :after {
   box-sizing: border-box;
 }
 
-/* Button style */
 button {
-  position: absolute;
   z-index: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 36px;
-  min-height: 36px;
-  padding: 4px;
-  margin: 12px;
-  line-height: normal;
   text-align: center;
   cursor: pointer;
-  box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.3098039216);
-  transition: all 0.2s ease-in-out;
-}
-button::before {
+  justify-content: center;
+  align-items: center;
+  min-width: 36px;
+  min-height: 36px;
+  margin: 12px;
+  padding: 4px;
+  line-height: normal;
+  transition: all .2s ease-in-out;
+  display: flex;
   position: absolute;
+  box-shadow: 0 0 16px #0000004f;
+}
+
+button:before {
+  content: "";
   min-width: 50px;
   min-height: 50px;
-  content: "";
+  position: absolute;
   inset: -8.5px;
 }
+
 button:focus-visible {
-  outline: 3px solid transparent;
+  outline: 3px solid #0000;
 }
 
 .v2 {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  place-content: center center;
   text-align: center;
   border-radius: 5px;
+  flex-wrap: wrap;
+  place-content: center;
+  align-items: center;
+  display: flex;
 }
-.v2::after {
-  display: inline-block;
-  padding-right: 3px;
-  padding-left: 3px;
+
+.v2:after {
   font-family: var(--gifa11y-font);
+  content: "GIF";
+  padding-left: 3px;
+  padding-right: 3px;
   font-weight: 600;
   line-height: 0;
-  content: "GIF";
+  display: inline-block;
 }
 
 i {
-  padding: 4px;
   vertical-align: middle;
+  padding: 4px;
 }
 
 svg {
-  position: relative;
-  display: block;
   vertical-align: middle;
   flex-shrink: 0;
+  display: block;
+  position: relative;
 }

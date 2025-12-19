@@ -1,5 +1,5 @@
-const { readdir, mkdir, copyFile, readFile, writeFile } = require('fs').promises;
-const { join } = require('path');
+import { readdir, mkdir, copyFile, readFile, writeFile } from 'fs/promises';
+import { join } from 'path';
 
 const copyDirectory = async (src, dest) => {
   const [entries] = await Promise.all([

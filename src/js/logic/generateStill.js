@@ -15,10 +15,8 @@ export default function generateStill(gif, option) {
   const pixelRatio = window.devicePixelRatio || 1;
 
   // Set the canvas internal resolution to match the scaled dimensions.
-  canvas.width = option.useDevicePixelRatio
-    ? naturalWidth * pixelRatio : naturalWidth;
-  canvas.height = option.useDevicePixelRatio
-    ? naturalHeight * pixelRatio : naturalHeight;
+  canvas.width = option.useDevicePixelRatio ? naturalWidth * pixelRatio : naturalWidth;
+  canvas.height = option.useDevicePixelRatio ? naturalHeight * pixelRatio : naturalHeight;
 
   // Match the canvas style size to the image's current dimensions.
   const setCanvasSize = () => {
@@ -53,10 +51,11 @@ export default function generateStill(gif, option) {
 
   // If content author wants GIF to be paused initially (or prefers reduced motion).
   const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const shouldPause = mediaQuery.matches
-    || image.classList.contains('gifa11y-paused')
-    || image.src.includes('gifa11y-paused')
-    || option.initiallyPaused;
+  const shouldPause =
+    mediaQuery.matches ||
+    image.classList.contains('gifa11y-paused') ||
+    image.src.includes('gifa11y-paused') ||
+    option.initiallyPaused;
 
   image.style.display = shouldPause ? 'none' : '';
   canvas.style.display = shouldPause ? '' : 'none';

@@ -1,7 +1,7 @@
-import findGifs from './logic/findGifs.js';
-import generateStill from './logic/generateStill.js';
-import { Gifa11yButton, generateButtons } from './logic/generateButtons.js';
 import everythingToggle from './logic/everythingToggle.js';
+import findGifs from './logic/findGifs.js';
+import { Gifa11yButton, generateButtons } from './logic/generateButtons.js';
+import generateStill from './logic/generateStill.js';
 import toggleAll from './logic/toggleAll';
 
 export default class Gifa11y {
@@ -86,12 +86,16 @@ export default class Gifa11y {
         customElements.define('gifa11y-button', Gifa11yButton);
 
         // Run Gifa11y on page load.
-        document.addEventListener('DOMContentLoaded', () => {
-          this.findNew();
+        document.addEventListener(
+          'DOMContentLoaded',
+          () => {
+            this.findNew();
 
-          // Initialize toggle everything button.
-          everythingToggle(option);
-        }, false);
+            // Initialize toggle everything button.
+            everythingToggle(option);
+          },
+          false,
+        );
       }
     };
     this.initialize();

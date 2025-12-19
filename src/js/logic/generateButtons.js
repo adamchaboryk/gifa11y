@@ -1,4 +1,4 @@
-import generalStyles from '../../../dist/css/gifa11y.min.css';
+import generalStyles from '../../css/gifa11y.css?inline';
 import toggleAll from './toggleAll';
 
 // Create web component container.
@@ -65,11 +65,11 @@ export function generateButtons(gif, option) {
   let playDisplay;
   const filename = image.src;
   if (
-    !mediaQuery
-    || mediaQuery.matches
-    || image.classList.contains('gifa11y-paused')
-    || filename.indexOf('gifa11y-paused') > -1
-    || option.initiallyPaused === true
+    !mediaQuery ||
+    mediaQuery.matches ||
+    image.classList.contains('gifa11y-paused') ||
+    filename.indexOf('gifa11y-paused') > -1 ||
+    option.initiallyPaused === true
   ) {
     initialState = option.langPlay;
     playDisplay = 'block';
@@ -120,7 +120,8 @@ export function generateButtons(gif, option) {
     // If icon is supplied via icon font or HTML.
     pauseIcon.innerHTML = option.buttonPauseIconHTML;
   } else {
-    pauseIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/></svg>';
+    pauseIcon.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/></svg>';
   }
 
   /* Play icon. */
@@ -132,7 +133,8 @@ export function generateButtons(gif, option) {
     // If icon is supplied via icon font or HTML.
     playIcon.innerHTML = option.buttonPlayIconHTML;
   } else {
-    playIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>';
+    playIcon.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>';
   }
 
   // If gif is within a hyperlink, insert button before it.
@@ -144,42 +146,46 @@ export function generateButtons(gif, option) {
   instance.shadowRoot.appendChild(pauseButton);
 
   // Add functionality.
-  pauseButton.addEventListener('click', (e) => {
-    e.preventDefault();
+  pauseButton.addEventListener(
+    'click',
+    (e) => {
+      e.preventDefault();
 
-    const getState = pauseButton.getAttribute('data-gifa11y-state');
-    const state = getState === 'paused' ? 'playing' : 'paused';
-    const gifa11yState = new CustomEvent('gifa11yState', {
-      detail: {
-        newState: state,
-        button: pauseButton,
-      },
-    });
-    window.dispatchEvent(gifa11yState);
+      const getState = pauseButton.getAttribute('data-gifa11y-state');
+      const state = getState === 'paused' ? 'playing' : 'paused';
+      const gifa11yState = new CustomEvent('gifa11yState', {
+        detail: {
+          newState: state,
+          button: pauseButton,
+        },
+      });
+      window.dispatchEvent(gifa11yState);
 
-    // If all buttons share the same pause state.
-    if (option.sharedPauseButton) {
-      toggleAll(state);
-      return;
-    }
+      // If all buttons share the same pause state.
+      if (option.sharedPauseButton) {
+        toggleAll(state);
+        return;
+      }
 
-    pauseButton.setAttribute('data-gifa11y-state', state);
+      pauseButton.setAttribute('data-gifa11y-state', state);
 
-    const play = pauseButton.querySelector('.play');
-    const pause = pauseButton.querySelector('.pause');
+      const play = pauseButton.querySelector('.play');
+      const pause = pauseButton.querySelector('.pause');
 
-    if (pauseButton.getAttribute('data-gifa11y-state') === 'paused') {
-      image.style.display = 'none';
-      findCanvas.style.display = 'block';
-      play.style.display = 'block';
-      pause.style.display = 'none';
-      pauseButton.setAttribute('aria-label', `${option.langPlay} ${alt}`);
-    } else {
-      image.style.display = 'block';
-      findCanvas.style.display = 'none';
-      play.style.display = 'none';
-      pause.style.display = 'block';
-      pauseButton.setAttribute('aria-label', `${option.langPause} ${alt}`);
-    }
-  }, false);
+      if (pauseButton.getAttribute('data-gifa11y-state') === 'paused') {
+        image.style.display = 'none';
+        findCanvas.style.display = 'block';
+        play.style.display = 'block';
+        pause.style.display = 'none';
+        pauseButton.setAttribute('aria-label', `${option.langPlay} ${alt}`);
+      } else {
+        image.style.display = 'block';
+        findCanvas.style.display = 'none';
+        play.style.display = 'none';
+        pause.style.display = 'block';
+        pauseButton.setAttribute('aria-label', `${option.langPause} ${alt}`);
+      }
+    },
+    false,
+  );
 }
