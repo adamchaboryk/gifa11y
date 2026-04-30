@@ -1,5 +1,6 @@
 import generalStyles from '../../css/gifa11y.css?inline';
 import toggleAll from './toggleAll';
+import { supportsAnchorPositioning } from './utils';
 
 // Create web component container.
 export class Gifa11yButton extends HTMLElement {
@@ -49,12 +50,14 @@ export class Gifa11yButton extends HTMLElement {
       .warning:after {
         content: '${this.option.langAltWarning}';
         padding: 5px;
+        min-width: 260px;
+        font-weight: 600;
       }`;
     shadow.appendChild(style);
   }
 }
 
-export function generateButtons(gif, option) {
+export function generateButtons(gif, option, i) {
   const image = gif;
   const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const findCanvas = image.nextElementSibling;
@@ -84,6 +87,8 @@ export function generateButtons(gif, option) {
 
   // Create button
   const pauseButton = document.createElement('button');
+  pauseButton.setAttribute('part', 'button');
+  pauseButton.classList.add(option.buttonPosition);
 
   // If alt is missing, indicate as such on button label and canvas element.
   let alt = image.getAttribute('alt');
@@ -144,6 +149,45 @@ export function generateButtons(gif, option) {
   const instance = document.createElement('gifa11y-button');
   location.insertAdjacentElement('beforebegin', instance);
   instance.shadowRoot.appendChild(pauseButton);
+
+  // Enhance positioning.
+  if (supportsAnchorPositioning()) {
+    // Validate button position.
+    const validPositions = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+    const position = validPositions.includes(option.buttonPosition)
+      ? option.buttonPosition
+      : 'top-left';
+
+    // Default offsets.
+    const defaultOffsets = {
+      'top-left': '0',
+      'top-right': option.showGifText ? '0 90px 0 0' : '0 60px',
+      'bottom-left': '0 0 60px 0',
+      'bottom-right': option.showGifText ? '0 90px 60px 0' : '60px 60px',
+    };
+
+    const offset = option.buttonOffset || defaultOffsets[position];
+    const anchorName = `--gifa11y-anchor-${i}`;
+    image.style.anchorName = anchorName;
+    instance.style.position = 'absolute';
+    instance.style.positionAnchor = anchorName;
+    instance.style.inset = 'auto';
+    instance.style.margin = offset;
+
+    // y-axis
+    if (position.includes('top')) {
+      instance.style.top = 'anchor(top)';
+    } else {
+      instance.style.bottom = 'anchor(bottom)';
+    }
+
+    // x-axis
+    if (position.includes('left')) {
+      instance.style.left = 'anchor(left)';
+    } else {
+      instance.style.right = 'anchor(right)';
+    }
+  }
 
   // Add functionality.
   pauseButton.addEventListener(

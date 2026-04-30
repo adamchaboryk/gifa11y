@@ -44,7 +44,7 @@ button {
 
 .v2 {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   place-content: center center;
   text-align: center;

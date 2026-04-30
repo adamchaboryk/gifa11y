@@ -1,4 +1,6 @@
-export default function generateStill(gif, option) {
+import { supportsAnchorPositioning } from './utils';
+
+export default function generateStill(gif, option, i) {
   const image = gif;
 
   // Initial setup of canvas element.
@@ -60,4 +62,17 @@ export default function generateStill(gif, option) {
   image.style.display = shouldPause ? 'none' : '';
   canvas.style.display = shouldPause ? '' : 'none';
   image.setAttribute('data-gifa11y-state', shouldPause ? 'paused' : 'playing');
+
+  // Enhance positioning and preserve existing anchor names.
+  if (supportsAnchorPositioning()) {
+    const anchorName = `--gifa11y-anchor-${i}`;
+    [image, canvas].forEach((el) => {
+      const filteredNames = (el.style.anchorName || '')
+        .split(',')
+        .map((name) => name.trim())
+        .filter((name) => name && !name.startsWith('--gifa11y-anchor-'));
+      filteredNames.push(anchorName);
+      el.style.anchorName = filteredNames.join(', ');
+    });
+  }
 }

@@ -15,10 +15,13 @@ export default class Gifa11y {
       buttonFocusColor: '#00e7ffad',
       buttonIconSize: '1.5rem',
       buttonIconFontSize: '1rem',
+      buttonPosition: 'top-left',
+      buttonOffset: '',
       buttonPlayIconID: '',
       buttonPauseIconID: '',
       buttonPlayIconHTML: '',
       buttonPauseIconHTML: '',
+      buttonAppend: 'beforebegin',
       container: 'body',
       exclusions: '',
       gifa11yOff: '',
@@ -51,11 +54,13 @@ export default class Gifa11y {
 
       // Iterate through all gifs after they finish loading.
       $newGifs.forEach(($el) => {
+        const i = window.a11ygifs.length;
+
         // Generate stills & play/pause buttons.
         const doMagic = () => {
-          generateStill($el, option);
+          generateStill($el, option, i);
           if (option.showButtons === true) {
-            generateButtons($el, option);
+            generateButtons($el, option, i);
           }
         };
 

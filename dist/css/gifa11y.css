@@ -1,5 +1,6 @@
 :host {
-  --gifa11y-font: system-ui, "Segoe UI", roboto, helvetica, arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --gifa11y-font: system-ui, "Segoe UI", roboto, helvetica, arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 *, :before, :after {
@@ -38,7 +39,7 @@ button:focus-visible {
 .v2 {
   text-align: center;
   border-radius: 5px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   place-content: center;
   align-items: center;
   display: flex;

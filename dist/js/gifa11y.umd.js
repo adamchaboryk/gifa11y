@@ -1,4 +1,4 @@
-/*! Gifa11y 2.2.2 | @author Adam Chaboryk © 2021 - 2025 | @license MIT | @contact adam@chaboryk.xyz | https://github.com/adamchaboryk/gifa11y */
+/*! Gifa11y 2.3.0 | @author Adam Chaboryk © 2021 - 2026 | @license MIT | @contact adam@chaboryk.xyz | https://github.com/adamchaboryk/gifa11y */
 (function(global, factory) {
   typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, global.Gifa11y = factory());
 })(this, (function() {
@@ -119,7 +119,10 @@
       $newGifs.push($gif);
     });
   }
-  const generalStyles = ':host{--gifa11y-font:system-ui,"Segoe UI",roboto,helvetica,arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"}*,:before,:after{box-sizing:border-box}button{z-index:500;text-align:center;cursor:pointer;justify-content:center;align-items:center;min-width:36px;min-height:36px;margin:12px;padding:4px;line-height:normal;transition:all .2s ease-in-out;display:flex;position:absolute;box-shadow:0 0 16px #0000004f}button:before{content:"";min-width:50px;min-height:50px;position:absolute;inset:-8.5px}button:focus-visible{outline:3px solid #0000}.v2{text-align:center;border-radius:5px;flex-wrap:wrap;place-content:center;align-items:center;display:flex}.v2:after{font-family:var(--gifa11y-font);content:"GIF";padding-left:3px;padding-right:3px;font-weight:600;line-height:0;display:inline-block}i{vertical-align:middle;padding:4px}svg{vertical-align:middle;flex-shrink:0;display:block;position:relative}';
+  const generalStyles = ':host{--gifa11y-font:system-ui, "Segoe UI", roboto, helvetica, arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"}*,:before,:after{box-sizing:border-box}button{z-index:500;text-align:center;cursor:pointer;justify-content:center;align-items:center;min-width:36px;min-height:36px;margin:12px;padding:4px;line-height:normal;transition:all .2s ease-in-out;display:flex;position:absolute;box-shadow:0 0 16px #0000004f}button:before{content:"";min-width:50px;min-height:50px;position:absolute;inset:-8.5px}button:focus-visible{outline:3px solid #0000}.v2{text-align:center;border-radius:5px;flex-wrap:nowrap;place-content:center;align-items:center;display:flex}.v2:after{font-family:var(--gifa11y-font);content:"GIF";padding-left:3px;padding-right:3px;font-weight:600;line-height:0;display:inline-block}i{vertical-align:middle;padding:4px}svg{vertical-align:middle;flex-shrink:0;display:block;position:relative}';
+  function supportsAnchorPositioning() {
+    return CSS.supports("anchor-name: --gifa11y") && CSS.supports("position-anchor: --gifa11y");
+  }
   class Gifa11yButton extends HTMLElement {
     constructor() {
       super();
@@ -164,11 +167,13 @@
       .warning:after {
         content: '${this.option.langAltWarning}';
         padding: 5px;
+        min-width: 260px;
+        font-weight: 600;
       }`;
       shadow.appendChild(style);
     }
   }
-  function generateButtons(gif, option) {
+  function generateButtons(gif, option, i) {
     const image = gif;
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const findCanvas = image.nextElementSibling;
@@ -189,6 +194,8 @@
       currentState = "playing";
     }
     const pauseButton = document.createElement("button");
+    pauseButton.setAttribute("part", "button");
+    pauseButton.classList.add(option.buttonPosition);
     let alt = image.getAttribute("alt");
     if (alt === null || alt === "" || alt === " ") {
       alt = option.langMissingAlt;
@@ -227,6 +234,33 @@
     const instance = document.createElement("gifa11y-button");
     location.insertAdjacentElement("beforebegin", instance);
     instance.shadowRoot.appendChild(pauseButton);
+    if (supportsAnchorPositioning()) {
+      const validPositions = ["top-left", "top-right", "bottom-left", "bottom-right"];
+      const position = validPositions.includes(option.buttonPosition) ? option.buttonPosition : "top-left";
+      const defaultOffsets = {
+        "top-left": "0",
+        "top-right": option.showGifText ? "0 90px 0 0" : "0 60px",
+        "bottom-left": "0 0 60px 0",
+        "bottom-right": option.showGifText ? "0 90px 60px 0" : "60px 60px"
+      };
+      const offset = option.buttonOffset || defaultOffsets[position];
+      const anchorName = `--gifa11y-anchor-${i}`;
+      image.style.anchorName = anchorName;
+      instance.style.position = "absolute";
+      instance.style.positionAnchor = anchorName;
+      instance.style.inset = "auto";
+      instance.style.margin = offset;
+      if (position.includes("top")) {
+        instance.style.top = "anchor(top)";
+      } else {
+        instance.style.bottom = "anchor(bottom)";
+      }
+      if (position.includes("left")) {
+        instance.style.left = "anchor(left)";
+      } else {
+        instance.style.right = "anchor(right)";
+      }
+    }
     pauseButton.addEventListener(
       "click",
       (e) => {
@@ -264,7 +298,7 @@
       false
     );
   }
-  function generateStill(gif, option) {
+  function generateStill(gif, option, i) {
     const image = gif;
     const canvas = document.createElement("canvas");
     canvas.setAttribute("role", "img");
@@ -299,6 +333,14 @@
     image.style.display = shouldPause ? "none" : "";
     canvas.style.display = shouldPause ? "" : "none";
     image.setAttribute("data-gifa11y-state", shouldPause ? "paused" : "playing");
+    if (supportsAnchorPositioning()) {
+      const anchorName = `--gifa11y-anchor-${i}`;
+      [image, canvas].forEach((el) => {
+        const filteredNames = (el.style.anchorName || "").split(",").map((name) => name.trim()).filter((name) => name && !name.startsWith("--gifa11y-anchor-"));
+        filteredNames.push(anchorName);
+        el.style.anchorName = filteredNames.join(", ");
+      });
+    }
   }
   class Gifa11y {
     constructor(options) {
@@ -311,10 +353,13 @@
         buttonFocusColor: "#00e7ffad",
         buttonIconSize: "1.5rem",
         buttonIconFontSize: "1rem",
+        buttonPosition: "top-left",
+        buttonOffset: "",
         buttonPlayIconID: "",
         buttonPauseIconID: "",
         buttonPlayIconHTML: "",
         buttonPauseIconHTML: "",
+        buttonAppend: "beforebegin",
         container: "body",
         exclusions: "",
         gifa11yOff: "",
@@ -340,10 +385,11 @@
         const $newGifs = [];
         findGifs($newGifs, option);
         $newGifs.forEach(($el) => {
+          const i = window.a11ygifs.length;
           const doMagic = () => {
-            generateStill($el, option);
+            generateStill($el, option, i);
             if (option.showButtons === true) {
-              generateButtons($el, option);
+              generateButtons($el, option, i);
             }
           };
           if ($el.complete) {
